@@ -1,0 +1,16 @@
+body {
+	background: linear-gradient(#FFF, #666666); 
+	padding:0px; 
+	margin:0px; 
+} 
+#main-canvas { 
+  position:absolute; 
+  top:50%; 
+  left:50%; 
+  padding:0;
+  margin:0;
+  transform:translate(-50%,-50%); 
+  width:  90vmin; 
+  height: 90vmin;
+  cursor: none;
+} 

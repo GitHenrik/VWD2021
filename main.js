@@ -12,7 +12,7 @@ function main() {
 }
 
 function resetGame() {
-	window.cancelAnimationFrame(Settings.animationId)
+	window.cancelAnimationFrame(GlobalVariables.animationId)
 	//destroy all existing objects, initialize them and start over
 	while (Settings.BIRD.length > 0) {
 		Settings.BIRD.pop();
@@ -43,7 +43,7 @@ function initializeElements() {
 		Settings.BACKGROUNDS.push(new Background(Settings.currentColors[0], Settings.currentColors[Settings.currentColors.length - 1]))
 	}
 
-	points = 1
+	GlobalVariables.currentScore = 1
 
 	if (Settings.DRAW_BG_ELEMENTS) {
 		// create random sets of background elements (should provide enough variation)
@@ -74,7 +74,7 @@ function animate() {
 		*/
 	drawGame()
 
-	if (points % 150 === 0 && Settings.DRAW_WALLS) {
+	if (GlobalVariables.currentScore % 150 === 0 && Settings.DRAW_WALLS) {
 		Settings.WALLS.push(generateWall())
 	}
 
@@ -100,14 +100,14 @@ function animate() {
 	if (Settings.DEATH_ON && (checkDeath() || hitWall() || hitSolidWall())) {
 		endGame()
 	} else {
-		points++
-		Settings.animationId = window.requestAnimationFrame(animate)
+		GlobalVariables.currentScore++
+		GlobalVariables.animationId = window.requestAnimationFrame(animate)
 	}
 }
 
 
 function endGame() {
-	window.cancelAnimationFrame(Settings.animationId)
+	window.cancelAnimationFrame(GlobalVariables.animationId)
 }
 
 
@@ -154,7 +154,7 @@ Drawing order:
 	}
 
 	//change background, background elements etc. every now and then
-	if (points % Settings.CHANGE_BACKGROUND_INTERVAL === 0) {
+	if (GlobalVariables.currentScore % Settings.CHANGE_BACKGROUND_INTERVAL === 0) {
 		Settings.bgIndex = Math.floor(Math.random() * Settings.BACKGROUNDS.length)
 		Settings.bgElementIndex = Math.floor(Math.random() * Settings.BG_ELEMENTS.length)
 	}
@@ -171,7 +171,7 @@ Drawing order:
 		Border.drawBorder(ctx)
 	}
 	if (Settings.DRAW_SCORE) {
-		ScoreCounter.drawScorecounter(ctx, points)
+		ScoreCounter.drawScorecounter(ctx)
 	}
 	if (Settings.DRAW_CURSOR) {
 		drawCursor(ctx)

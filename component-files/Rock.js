@@ -1,8 +1,9 @@
 class Rock {
   constructor(color = "gray", points, size) {
 
-    this.y = (Math.random() / 2) + Settings.groundLevel
+    this.y = (Math.random() * (1 - Settings.groundLevel)) + Settings.groundLevel
     this.speed = Settings.BG_ELEMENT_SPEED * this.y
+    //this.blur = 3 * (1 - this.y) // Blurring is extremely inefficient in browsers, and causes lag easily
     this.color = color
     this.points = points
     this.size = size
@@ -12,6 +13,7 @@ class Rock {
   draw(ctx) {
     if (this.points === null) {
       ctx.save()
+      //ctx.filter = 'blur(' + this.blur + 'px)'
       ctx.beginPath()
       ctx.fillStyle = this.color
       ctx.translate(this.x, this.y)

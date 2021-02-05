@@ -21,7 +21,7 @@ class Settings {
   //BACKGROUND SETTINGS
   static bgIndex = 0
   static CHANGE_BACKGROUND_INTERVAL = 400
-  static groundLevel = 0.6
+  static groundLevel = 0.3
 
   //BACKGROUND ELEMENT SETTINGS
   static BG_ELEMENT_SETS = 5
@@ -40,15 +40,4 @@ class Settings {
   static WALLS = []
   static BACKGROUNDS = []
   static BG_ELEMENTS = []
-
-  //ANIMATION SETTINGS
-  static animationId = 0
-
 }
-
-// MOUSE AND CURSOR SETTINGS
-let mouseX = 500
-let mouseY = 500
-
-// POINTS SETTINGS
-let points = 1

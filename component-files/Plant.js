@@ -7,7 +7,7 @@ class Plant {
    * @param {String} type Type of plant to draw
    */
   constructor(color = "green", type = "bush") {
-    this.y = (Math.random() / 2) + Settings.groundLevel // 0.5 ... 1.1
+    this.y = (Math.random() * (1 - Settings.groundLevel)) + Settings.groundLevel
     this.size = 0.03 + Math.random() / 50  // radius 3% - 5% of canvas (3% + 2%)
     this.x = Math.random()
     this.deadBranches = [

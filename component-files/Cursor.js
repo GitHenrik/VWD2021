@@ -1,11 +1,11 @@
 
 
-function clickedWall(wall, mouseX, mouseY) {
+function clickedWall(wall) {
   let leftUpper = wall.corners.leftUpper
   let rightBottom = wall.corners.rightBottom
 
-  if (mouseX > leftUpper[0] && mouseX < rightBottom[0]) {
-    if (mouseY > leftUpper[1] && mouseY < rightBottom[1]) {
+  if (GlobalVariables.mouseX > leftUpper[0] && GlobalVariables.mouseX < rightBottom[0]) {
+    if (GlobalVariables.mouseY > leftUpper[1] && GlobalVariables.mouseY < rightBottom[1]) {
       return true
     }
   }
@@ -14,8 +14,8 @@ function clickedWall(wall, mouseX, mouseY) {
 function mouseMoved(event) {
   let canvas = document.getElementById("main-canvas")
   mouseCoordinates = getMousePos(canvas, event)
-  mouseX = mouseCoordinates.x
-  mouseY = mouseCoordinates.y
+  GlobalVariables.mouseX = mouseCoordinates.x
+  GlobalVariables.mouseY = mouseCoordinates.y
 }
 
 function getMousePos(canvas, evt) {
@@ -33,7 +33,7 @@ function getMousePos(canvas, evt) {
 function drawCursor(ctx) {
   ctx.save()
 
-  ctx.translate(mouseX / 1000, mouseY / 1000)
+  ctx.translate(GlobalVariables.mouseX / 1000, GlobalVariables.mouseY / 1000)
   ctx.lineWidth = 0.01
   //crosshairs
   ctx.strokeStyle = "crimson"
@@ -59,11 +59,11 @@ function drawCursor(ctx) {
 function clicked(event) {
   let canvas = document.getElementById("main-canvas")
   mouseCoordinates = getMousePos(canvas, event)
-  mouseX = mouseCoordinates.x / 1000
-  mouseY = mouseCoordinates.y / 1000
+  GlobalVariables.mouseX = mouseCoordinates.x / 1000
+  GlobalVariables.mouseY = mouseCoordinates.y / 1000
 
   for (let i = 0; i < Settings.WALLS.length; i++) {
-    if (clickedWall(Settings.WALLS[i], mouseX, mouseY) == true) {
+    if (clickedWall(Settings.WALLS[i])) {
       Settings.WALLS[i].solid = false
     }
   }

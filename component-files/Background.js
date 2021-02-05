@@ -16,7 +16,7 @@ class Background {
     ctx.fill()
     ctx.beginPath()
     ctx.fillStyle = this.groundColor
-    ctx.rect(0, Settings.groundLevel, 1, 0.4)
+    ctx.rect(0, Settings.groundLevel, 1, 1 - Settings.groundLevel)
     ctx.fill()
     ctx.restore()
   }

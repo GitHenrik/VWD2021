@@ -79,13 +79,20 @@ function hitWall() {
       Sounds.hitWallSound.play()
     return true
   }
+  if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
+    if (Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize <= Settings.BIRD[0].y + Settings.BIRD[0].radius) {
+      if (Settings.BIRD[0].x <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
+        console.log("Hit bottom vertical wall")
+        if (Settings.SOUND_ON) {
+          Sounds.hitWallSound.play()
+        }
+        return true
+      }
+    }
 
-  if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x && Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize <= Settings.BIRD[0].y + Settings.BIRD[0].radius && Settings.BIRD[0].x - Settings.BIRD[0].radius <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
-    console.log("Hit bottom vertical wall")
-    if (Settings.SOUND_ON)
-      Sounds.hitWallSound.play()
-    return true
   }
+
+
 
   if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftUpper) < Settings.BIRD[0].radius) {
     console.log("Hit top-left corner")

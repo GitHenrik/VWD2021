@@ -12,42 +12,37 @@ function main() {
 }
 
 function resetGame() {
-	window.cancelAnimationFrame(animationId)
+	window.cancelAnimationFrame(Settings.animationId)
 	//destroy all existing objects, initialize them and start over
-	while (BIRD.length > 0) {
-		BIRD.pop();
+	while (Settings.BIRD.length > 0) {
+		Settings.BIRD.pop();
 	}
-	while (WALLS.length > 0) {
-		WALLS.pop();
+	while (Settings.WALLS.length > 0) {
+		Settings.WALLS.pop();
 	}
-	while (BACKGROUNDS.length > 0) {
-		BACKGROUNDS.pop();
+	while (Settings.BACKGROUNDS.length > 0) {
+		Settings.BACKGROUNDS.pop();
 	}
-	while (BG_ELEMENTS.length > 0) {
-		BG_ELEMENTS.pop();
+	while (Settings.BG_ELEMENTS.length > 0) {
+		Settings.BG_ELEMENTS.pop();
 	}
 	initializeElements()
 	animate()
 }
 
 function initializeElements() {
-	currentColors = Colors.createColorPalette()
+	Settings.currentColors = Colors.createColorPalette()
+	// creates an array that contains different hues of a single color, then creates elements with those hues
 	if (Settings.DRAW_BIRD) {
-		BIRD.push(new Bird(0.1, 0.5, birdSpeed, birdRadius))
+		Settings.BIRD.push(new Bird(0.1, 0.5, Settings.birdSpeed, Settings.birdRadius))
 	}
 	if (Settings.DRAW_WALLS) {
-		WALLS.push(generateWall())
+		Settings.WALLS.push(generateWall())
 	}
 	if (Settings.DRAW_BACKGROUND) {
-		BACKGROUNDS.push(new Background(currentColors[0], currentColors[currentColors.length - 1]))
-		BACKGROUNDS.push(new Background("rgba(91, 91, 91, 1)", "rgba(153, 51, 51, 1)"))
-		BACKGROUNDS.push(new Background("rgba(153, 51, 153, 1)", "rgba(153, 153, 51, 1)"))
+		Settings.BACKGROUNDS.push(new Background(Settings.currentColors[0], Settings.currentColors[Settings.currentColors.length - 1]))
 	}
 
-	//60hz
-	wallSpeed = 0.003
-	//144hz
-	//wallSpeed = 0.003 * 0.416
 	points = 1
 
 	if (Settings.DRAW_BG_ELEMENTS) {
@@ -71,60 +66,6 @@ function arrayOfTruths(length) {
 	return array
 }
 
-function createBackgroundElement() {
-
-	const includeRocks = Math.random() < 0.5 ? true : false
-	const includePlants = Math.random() < 0.5 ? true : false
-	let rockList = []
-	let plantList = []
-
-	if (includeRocks) {
-		let rockCount = 8 + Math.ceil(Math.random() * 12) // random amount of rocks, at least 20
-		const types = ["arced", "bumpy", "irregular"]
-		let points = []
-		let edges = 5 + Math.ceil(Math.random() * 7)
-		let size = 0.01 + Math.random() / 33
-		// let	x = 1 + radius + Math.random() // Rocks appear from outside the canvas
-		// let y = (Math.random() / 2) + 0.6 //  0.6 < y < 1.1 
-		for (let i = 0; i < rockCount; i++) {
-
-			let type = types[Math.floor(Math.random() * types.length)]
-			if (type === "arced") {
-				points = null
-			}
-			if (type === "bumpy") {
-				points = Polygons.createPolygonPoints(edges, size, true)
-			}
-			if (type === "irregular") {
-				points = Polygons.createPolygonPoints(edges, size, true, true)
-			}
-
-			rockList.push(new Rock(Colors.randomGrayColor(), points, size))
-			//randomize properties for the next rock
-			edges = 5 + Math.ceil(Math.random() * 7)
-			size = 0.01 + Math.random() / 33
-			// x = 1 + radius + Math.random() 
-			// y = (Math.random() / 2) + 0.6
-		}
-	}
-	if (includePlants) {
-		let plantCount = 20 + Math.ceil(Math.random() * 20) // // random amount of rocks, at least 20
-		//const colors = ["#42f548", "#107813", "#fabe32", "#96fa6e", "#fff421"]
-		const types = ["dead", "round", "triangular", "bush", "grass"]
-		for (let i = 0; i < plantCount; i++) {
-			let nextColor = currentColors[Math.floor(Math.random() * currentColors.length)]
-			let type = types[Math.floor(Math.random() * types.length)]
-			plantList.push(new Plant(nextColor, type))
-		}
-	}
-
-	//combine all elements for this backgroundElement object, and sort them to render correctly
-	let elementList = rockList.concat(plantList)
-	elementList.sort((current, next) => current.y - next.y)
-
-	BG_ELEMENTS.push(new BackgroundElement(elementList))
-}
-
 function animate() {
 	/**
 		* 1. draws everything
@@ -134,23 +75,23 @@ function animate() {
 	drawGame()
 
 	if (points % 150 === 0 && Settings.DRAW_WALLS) {
-		WALLS.push(generateWall())
+		Settings.WALLS.push(generateWall())
 	}
 
 	//bird tippuu painovoiman mukaisesti kiihtyen
 	if (Settings.DRAW_BIRD) {
-		BIRD[0].speed += gravity
-		if (BIRD[0].speed > 0.02) {
-			BIRD[0].speed = 0.02
+		Settings.BIRD[0].speed += Settings.GRAVITY
+		if (Settings.BIRD[0].speed > 0.02) {
+			Settings.BIRD[0].speed = 0.02
 		}
-		BIRD[0].y += BIRD[0].speed
+		Settings.BIRD[0].y += Settings.BIRD[0].speed
 	}
 
 	if (Settings.DRAW_WALLS) {
-		for (let i = 0; i < WALLS.length; i++) {
+		for (let i = 0; i < Settings.WALLS.length; i++) {
 			moveWall(i)
-			if (WALLS[i].x + WALLS[i].width < 0) {
-				WALLS.shift()
+			if (Settings.WALLS[i].x + Settings.WALLS[i].width < 0) {
+				Settings.WALLS.shift()
 			}
 		}
 	}
@@ -160,31 +101,15 @@ function animate() {
 		endGame()
 	} else {
 		points++
-		animationId = window.requestAnimationFrame(animate)
+		Settings.animationId = window.requestAnimationFrame(animate)
 	}
 }
-function moveWall(i) {
-	WALLS[i].x -= wallSpeed
-	WALLS[i].corners.leftUpper = [WALLS[i].x - wallSpeed, WALLS[i].holeStart]
-	WALLS[i].corners.rightUpper = [WALLS[i].x + WALLS[i].width - wallSpeed, WALLS[i].holeStart]
-	WALLS[i].corners.leftBottom = [WALLS[i].x - wallSpeed, WALLS[i].holeStart + WALLS[i].holeSize]
-	WALLS[i].corners.rightBottom = [WALLS[i].x + WALLS[i].width - wallSpeed, WALLS[i].holeStart + WALLS[i].holeSize]
-
-}
-
-
-
 
 
 function endGame() {
-	window.cancelAnimationFrame(animationId)
+	window.cancelAnimationFrame(Settings.animationId)
 }
 
-function fly() {
-	if (!Settings.DRAW_BIRD)
-		return null
-	BIRD[0].speed = -0.01
-}
 
 // source https://stackoverflow.com/questions/20916953/get-distance-between-two-points-in-canvas
 function distance(location1, location2) {
@@ -194,15 +119,13 @@ function distance(location1, location2) {
 	return c
 }
 
-
-
 function checkDeath() {
 	if (!Settings.DRAW_BIRD || !Settings.DEATH_ON) {
 		return false
 	}
-	if (BIRD[0].y > 1 - BIRD[0].radius || BIRD[0].y < BIRD[0].radius) {
+	if (Settings.BIRD[0].y > 1 - Settings.BIRD[0].radius || Settings.BIRD[0].y < Settings.BIRD[0].radius) {
 		if (Settings.SOUND_ON)
-			hitFloorSound.play()
+			Sounds.hitFloorSound.play()
 		return true
 	}
 	return false
@@ -223,31 +146,25 @@ Drawing order:
 	let ctx = canvas.getContext("2d")
 	//Piirretään tausta ja elementit, mitkä vaihtuvat X pisteen välein
 	if (Settings.DRAW_BACKGROUND) {
-		BACKGROUNDS[bgIndex].draw(ctx)
+		Settings.BACKGROUNDS[Settings.bgIndex].draw(ctx)
 	}
 	if (Settings.DRAW_BG_ELEMENTS) {
 		//BG-elementtien siirto hoidetaan sen luokan sisällä.
-		BG_ELEMENTS[bgElementIndex].draw(ctx)
+		Settings.BG_ELEMENTS[Settings.bgElementIndex].draw(ctx)
 	}
 
 	//change background, background elements etc. every now and then
-	if (points % Settings.CHANGE_BACKGROUND === 0) {
-		bgIndex++
-		if (bgIndex >= BACKGROUNDS.length) {
-			bgIndex = 0
-		}
-		bgElementIndex++
-		if (bgElementIndex >= BG_ELEMENTS.length) {
-			bgElementIndex = 0
-		}
+	if (points % Settings.CHANGE_BACKGROUND_INTERVAL === 0) {
+		Settings.bgIndex = Math.floor(Math.random() * Settings.BACKGROUNDS.length)
+		Settings.bgElementIndex = Math.floor(Math.random() * Settings.BG_ELEMENTS.length)
 	}
 
 	if (Settings.DRAW_BIRD) {
-		BIRD[0].draw(ctx)
+		Settings.BIRD[0].draw(ctx)
 	}
 	if (Settings.DRAW_WALLS) {
-		for (let i = 0; i < WALLS.length; i++) {
-			WALLS[i].draw(ctx)
+		for (let i = 0; i < Settings.WALLS.length; i++) {
+			Settings.WALLS[i].draw(ctx)
 		}
 	}
 	if (Settings.DRAW_BORDER) {

@@ -7,9 +7,9 @@ class Plant {
    * @param {String} type Type of plant to draw
    */
   constructor(color = "green", type = "bush") {
-    this.y = (Math.random() / 2) + 0.6 // 0.5 ... 1.1
-    this.size = 0.03 + Math.random() / 50  // radius on 3% - 5% canvasista (3% + 2%)
-    this.x = 1.05 + Math.random() // Kivet imestyy vaihtelevan kauas, kuitenkin tulevat reunan takaa
+    this.y = (Math.random() / 2) + Settings.groundLevel // 0.5 ... 1.1
+    this.size = 0.03 + Math.random() / 50  // radius 3% - 5% of canvas (3% + 2%)
+    this.x = Math.random()
     this.deadBranches = [
       Math.random() < 0.7 ? true : false,
       Math.random() < 0.7 ? true : false,
@@ -18,7 +18,7 @@ class Plant {
     ]
     this.color = color
     this.type = type
-    this.speed = 0.005 * this.y
+    this.speed = Settings.BG_ELEMENT_SPEED * this.y
   }
 
   draw(ctx) {

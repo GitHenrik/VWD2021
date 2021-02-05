@@ -62,9 +62,9 @@ function clicked(event) {
   mouseX = mouseCoordinates.x / 1000
   mouseY = mouseCoordinates.y / 1000
 
-  for (let i = 0; i < WALLS.length; i++) {
-    if (clickedWall(WALLS[i], mouseX, mouseY) == true) {
-      WALLS[i].solid = false
+  for (let i = 0; i < Settings.WALLS.length; i++) {
+    if (clickedWall(Settings.WALLS[i], mouseX, mouseY) == true) {
+      Settings.WALLS[i].solid = false
     }
   }
 }

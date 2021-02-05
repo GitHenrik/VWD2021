@@ -12,11 +12,11 @@ class Background {
     ctx.translate(0, 0)
     ctx.beginPath()
     ctx.fillStyle = this.skyColor
-    ctx.rect(0, 0, 1, groundLevel)
+    ctx.rect(0, 0, 1, Settings.groundLevel)
     ctx.fill()
     ctx.beginPath()
     ctx.fillStyle = this.groundColor
-    ctx.rect(0, groundLevel, 1, 0.4)
+    ctx.rect(0, Settings.groundLevel, 1, 0.4)
     ctx.fill()
     ctx.restore()
   }

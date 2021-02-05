@@ -1,10 +1,13 @@
 
 class Bird {
-  constructor(x, y, speed = 0.001, radius = 0.05) {
+  constructor(x, y, speed = -0.005, radius = 0.05) {
     this.x = x   		//lisätty x koordinaatti seinään osumista varten
     this.y = y
     this.speed = speed
     this.radius = radius
+  }
+  fly() {
+    this.speed = -0.01
   }
   draw(ctx) {
     ctx.save()

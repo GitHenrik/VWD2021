@@ -59,56 +59,72 @@ function generateWall() {
 }
 
 
+function moveWall(i) {
+  Settings.WALLS[i].x -= Settings.WALL_SPEED
+  Settings.WALLS[i].corners.leftUpper = [Settings.WALLS[i].x - Settings.WALL_SPEED, Settings.WALLS[i].holeStart]
+  Settings.WALLS[i].corners.rightUpper = [Settings.WALLS[i].x + Settings.WALLS[i].width - Settings.WALL_SPEED, Settings.WALLS[i].holeStart]
+  Settings.WALLS[i].corners.leftBottom = [Settings.WALLS[i].x - Settings.WALL_SPEED, Settings.WALLS[i].holeStart + Settings.WALLS[i].holeSize]
+  Settings.WALLS[i].corners.rightBottom = [Settings.WALLS[i].x + Settings.WALLS[i].width - Settings.WALL_SPEED, Settings.WALLS[i].holeStart + Settings.WALLS[i].holeSize]
+
+}
+
 function hitWall() {
   if (!Settings.DRAW_BIRD || !Settings.DRAW_WALLS) {
     return false
   }
 
-  if (BIRD[0].x + BIRD[0].radius >= WALLS[0].x && (WALLS[0].holeStart - BIRD[0].radius) >= BIRD[0].y - BIRD[0].radius) {          //osuminen yläetuseinään
+  if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x && (Settings.WALLS[0].holeStart - Settings.BIRD[0].radius) >= Settings.BIRD[0].y - Settings.BIRD[0].radius && Settings.BIRD[0].x - Settings.BIRD[0].radius <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
+    console.log("Hit top vertical wall")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
 
-  if (BIRD[0].x + BIRD[0].radius >= WALLS[0].x && WALLS[0].holeStart + WALLS[0].holeSize + BIRD[0].radius <= BIRD[0].y + BIRD[0].radius) {        //osuminen alaetuseinään
+  if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x && Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize <= Settings.BIRD[0].y + Settings.BIRD[0].radius && Settings.BIRD[0].x - Settings.BIRD[0].radius <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
+    console.log("Hit bottom vertical wall")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
 
-  if (distance([BIRD[0].x, BIRD[0].y], WALLS[0].corners.leftUpper) < BIRD[0].radius) {
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftUpper) < Settings.BIRD[0].radius) {
+    console.log("Hit top-left corner")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
-  if (distance([BIRD[0].x, BIRD[0].y], WALLS[0].corners.rightUpper) < BIRD[0].radius) {
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.rightUpper) < Settings.BIRD[0].radius) {
+    console.log("Hit top-right corner")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
-  if (distance([BIRD[0].x, BIRD[0].y], WALLS[0].corners.leftBottom) < BIRD[0].radius) {
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftBottom) < Settings.BIRD[0].radius) {
+    console.log("Hit bottom-left corner")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
-  if (distance([BIRD[0].x, BIRD[0].y], WALLS[0].corners.rightBottom) < BIRD[0].radius) {
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.rightBottom) < Settings.BIRD[0].radius) {
+    console.log("Hit bottom-right corner")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
-    return true
-  }
-
-  //keskiosan ylälaita
-  let midpoint = [WALLS[0].corners.leftUpper[0] + (WALLS[0].corners.rightUpper[0] - WALLS[0].corners.leftUpper[0]) / 2, WALLS[0].corners.leftUpper[1]]
-  if (distance([BIRD[0].x, BIRD[0].y], midpoint) < BIRD[0].radius) {
-    if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
 
-  midpoint = [midpoint[0], WALLS[0].corners.leftBottom[1]]
-  if (distance([BIRD[0].x, BIRD[0].y], midpoint) < BIRD[0].radius) {
+  let midpoint = [Settings.WALLS[0].corners.leftUpper[0] + (Settings.WALLS[0].corners.rightUpper[0] - Settings.WALLS[0].corners.leftUpper[0]) / 2, Settings.WALLS[0].corners.leftUpper[1]]
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], midpoint) < Settings.BIRD[0].radius) {
+    console.log("Hit top horizontal wall")
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
+    return true
+  }
+
+  midpoint = [midpoint[0], Settings.WALLS[0].corners.leftBottom[1]]
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], midpoint) < Settings.BIRD[0].radius) {
+    console.log("Hit bottom horizontal wall")
+    if (Settings.SOUND_ON)
+      Sounds.hitWallSound.play()
     return true
   }
 
@@ -120,9 +136,12 @@ function hitWall() {
 }
 
 function hitSolidWall() {
-  if (WALLS[0].solid && BIRD[0].x + BIRD[0].radius >= WALLS[0].x) {
+  if (!Settings.DRAW_BIRD) {
+    return false
+  }
+  if (Settings.WALLS[0].solid && Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
     if (Settings.SOUND_ON)
-      hitWallSound.play()
+      Sounds.hitWallSound.play()
     return true
   }
   return false

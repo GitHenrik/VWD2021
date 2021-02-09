@@ -27,6 +27,7 @@ class Settings {
   static BG_ELEMENT_SETS = 5
   static bgElementIndex = 0
   static CHANCE_OF_ELEMENT = 0.7
+  static bgElementSize = 0.02
 
   //BIRD SETTINGS
   static birdRadius = 0.05

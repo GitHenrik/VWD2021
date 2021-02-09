@@ -21,23 +21,26 @@ class BackgroundElement {
 
 function createBackgroundElement() {
   //randomize which elements this distinct background set has
-  const includeRocks = Math.random() > Settings.CHANCE_OF_ELEMENT ? false : true
-  const includePlants = Math.random() > Settings.CHANCE_OF_ELEMENT ? false : true
+  let includeRocks = Math.random() > Settings.CHANCE_OF_ELEMENT ? false : true
+  let includePlants = Math.random() > Settings.CHANCE_OF_ELEMENT ? false : true
+
+  //if there would be nothing, default to having just one element
+  if (!includeRocks && !includePlants) {
+    includePlants = true
+  }
+
   let rockList = []
   let plantList = []
 
   if (includeRocks) {
     let rockCount = 8 + Math.ceil(Math.random() * 12) // random amount of elements, at least some
-    const types = ["arced", "bumpy", "irregular"]
+    const types = ["arced", "bumpy", "irregular", "pebble"]
     let points = []
     let edges = 5 + Math.ceil(Math.random() * 7)
-    let size = 0.01 + Math.random() / 33
+    let size = Settings.bgElementSize
     for (let i = 0; i < rockCount; i++) {
 
       let type = types[Math.floor(Math.random() * types.length)]
-      if (type === "arced") {
-        points = null
-      }
       if (type === "bumpy") {
         points = Polygons.createPolygonPoints(edges, size, true)
       }
@@ -45,15 +48,15 @@ function createBackgroundElement() {
         points = Polygons.createPolygonPoints(edges, size, true, true)
       }
 
-      rockList.push(new Rock(Colors.randomGrayColor(), points, size))
+      rockList.push(new Rock(Colors.randomGrayColor(), points, size, type))
       //randomize properties for the next rock
       edges = 5 + Math.ceil(Math.random() * 7)
-      size = 0.01 + Math.random() / 33
+      size = Settings.bgElementSize
     }
   }
   if (includePlants) {
     let plantCount = 20 + Math.ceil(Math.random() * 20) // // random amount of elements, at least some
-    const types = ["dead", "round", "triangular", "bush", "grass"]
+    const types = ["dead", "round", "triangular", "bush", "grass", "leafy"]
     for (let i = 0; i < plantCount; i++) {
       let nextColor = Settings.currentColors[Math.floor(Math.random() * Settings.currentColors.length)]
       let type = types[Math.floor(Math.random() * types.length)]

@@ -37,5 +37,8 @@ class Polygons {
     }
   }
 
-
+  static drawCircle(ctx, x, y, radius) {
+    ctx.arc(x, y, radius, 0, Math.PI * 2)
+    ctx.stroke()
+  }
 }

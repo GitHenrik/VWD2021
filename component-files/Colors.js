@@ -1,6 +1,6 @@
 class Colors {
   static createColorPalette() {
-    let baseColors = ["blue", "red", "green", "yellow", "gray"]
+    let baseColors = ["blue", "red", "green", "yellow"]
     let selectedColor = baseColors[Math.floor(Math.random() * baseColors.length)]
     let colorPalette = []
     switch (selectedColor) {
@@ -16,7 +16,7 @@ class Colors {
         return colorPalette
       case "blue":
         for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(0, 0, i * 60))
+          colorPalette.push(Colors.getRGBColor(0, 0, i * 80))
         }
         return colorPalette
       case "yellow":

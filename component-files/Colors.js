@@ -1,47 +1,46 @@
 class Colors {
-  static createColorPalette() {
-    let baseColors = ["blue", "red", "green", "yellow"]
-    let selectedColor = baseColors[Math.floor(Math.random() * baseColors.length)]
-    let colorPalette = []
-    switch (selectedColor) {
-      case "red":
-        for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(i * 60, 0, 0))
+  static createColorPalette(theme) {
+    //instantiate color palette with flatlands colors
+    let colorPalette = {
+      skyColor: "#A2D6F9",
+      groundColor: "#7DD181",
+      plantColors: ["#4B7F52", "#96E8BC"],
+      largeObjectColor: "gray"
+    }
+    switch (theme) {
+      case "flatlands":
+        return colorPalette
+      case "mountainous":
+        colorPalette = {
+          skyColor: "#C4B7CB",
+          groundColor: "#BBC7CE",
+          plantColors: ["#BFEDEF", "#98E2C6"],
+          largeObjectColor: "#545C52"
         }
         return colorPalette
-      case "green":
-        for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(0, i * 60, 0))
+      case "beach":
+        colorPalette = {
+          skyColor: "#1E96FC",
+          groundColor: "#FCF300",
+          plantColors: ["#FFC600"],
+          largeObjectColor: "#072AC8"
         }
-        return colorPalette
-      case "blue":
-        for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(0, 0, i * 80))
-        }
-        return colorPalette
-      case "yellow":
-        for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(i * 60, i * 60, 0))
-        }
-        return colorPalette
-      case "gray":
-        for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(i * 60, i * 60, i * 60))
-        }
-        return colorPalette
-      default: //defaults to gray colors
-        for (let i = 1; i <= 3; i++) {
-          colorPalette.push(Colors.getRGBColor(i * 60, i * 60, i * 60))
-        }
+      //   colorPalette.push("#072AC8")
+      //   colorPalette.push("#1E96FC")
+      //   colorPalette.push("#A2D6F9")
+      //   colorPalette.push("#FCF300")
+      //   colorPalette.push("#FFC600")
+      //   return colorPalette
+      default:
         return colorPalette
     }
   }
 
-  static randomColor() {
+  static randomColor(opacity = 1) {
     let r = Math.floor(Math.random() * 255)
     let g = Math.floor(Math.random() * 255)
     let b = Math.floor(Math.random() * 255)
-    return ("rgba(" + r + "," + g + "," + b + ",1)")
+    return ("rgba(" + r + "," + g + "," + b + "," + opacity + ")")
   }
 
   static randomGrayColor() {

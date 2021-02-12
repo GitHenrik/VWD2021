@@ -8,4 +8,5 @@ class GlobalVariables {
 
   // SCORE
   static currentScore = 1
+
 }

@@ -14,43 +14,43 @@ function main() {
 function resetGame() {
 	window.cancelAnimationFrame(GlobalVariables.animationId)
 	//destroy all existing objects, initialize them and start over
+	while (Settings.themeSets.length > 0) {
+		Settings.themeSets.pop()
+	}
 	while (Settings.BIRD.length > 0) {
-		Settings.BIRD.pop();
+		Settings.BIRD.pop()
 	}
 	while (Settings.WALLS.length > 0) {
-		Settings.WALLS.pop();
-	}
-	while (Settings.BACKGROUNDS.length > 0) {
-		Settings.BACKGROUNDS.pop();
-	}
-	while (Settings.BG_ELEMENTS.length > 0) {
-		Settings.BG_ELEMENTS.pop();
+		Settings.WALLS.pop()
 	}
 	initializeElements()
 	animate()
 }
 
+//looppi, missä tehdään THEME SETS määrä eri juttuja. Ei tarvii sisäisiä looppeja. Nämä sitten talle netaan johonkin bg-set-olioon ehkä
 function initializeElements() {
-	Settings.currentColors = Colors.createColorPalette()
-	// creates an array that contains different hues of a single color, then creates elements with those hues
+	//initialize themed background sets
+	for (let i = 0; i < Settings.THEME_COUNT; i++) {
+		Settings.currentTheme = Settings.THEMES[Math.floor(Math.random() * Settings.THEMES.length)]
+		Settings.currentColors = Colors.createColorPalette(Settings.currentTheme)
+		let background = Background.createBackground(Settings.currentTheme)
+		let backgroundElements = BackgroundElement.createBackgroundElement(Settings.currentTheme)
+		Settings.themeSets.push(new ThemeSet(background, backgroundElements))
+
+	}
+
+	//initialize bird
 	if (Settings.DRAW_BIRD) {
 		Settings.BIRD.push(new Bird(0.1, 0.5, Settings.birdSpeed, Settings.birdRadius))
 	}
+
+	//initialize walls
 	if (Settings.DRAW_WALLS) {
 		Settings.WALLS.push(generateWall())
 	}
-	if (Settings.DRAW_BACKGROUND) {
-		Settings.BACKGROUNDS.push(new Background(Settings.currentColors[0], Settings.currentColors[Settings.currentColors.length - 1]))
-	}
+
 
 	GlobalVariables.currentScore = 1
-
-	if (Settings.DRAW_BG_ELEMENTS) {
-		// create random sets of background elements (should provide enough variation)
-		for (let i = 0; i < Settings.BG_ELEMENT_SETS; i++) {
-			createBackgroundElement()
-		}
-	}
 
 }
 
@@ -133,30 +133,26 @@ function checkDeath() {
 
 function drawGame() {
 	/*
-***** tässä vain piirtäminen , tavaroiden siirtely jne. "animate"-funktiossa
 Drawing order:
 1. background
-1.5 decorations
-2. bird and obstacles
-3. border
-4. score board
-5. cursor 
+2. background elements
+3. bird and obstacles
+4. border
+5. score board
+6. cursor 
 */
 	let canvas = document.getElementById("main-canvas")
 	let ctx = canvas.getContext("2d")
-	//Piirretään tausta ja elementit, mitkä vaihtuvat X pisteen välein
-	if (Settings.DRAW_BACKGROUND) {
-		Settings.BACKGROUNDS[Settings.bgIndex].draw(ctx)
-	}
-	if (Settings.DRAW_BG_ELEMENTS) {
-		//BG-elementtien siirto hoidetaan sen luokan sisällä.
-		Settings.BG_ELEMENTS[Settings.bgElementIndex].draw(ctx)
-	}
 
-	//change background, background elements etc. every now and then
-	if (GlobalVariables.currentScore % Settings.CHANGE_BACKGROUND_INTERVAL === 0) {
-		Settings.bgIndex = Math.floor(Math.random() * Settings.BACKGROUNDS.length)
-		Settings.bgElementIndex = Math.floor(Math.random() * Settings.BG_ELEMENTS.length)
+	Settings.themeSets[Settings.themeIndex].draw(ctx)
+
+	//change theme every now and then
+	if (GlobalVariables.currentScore % Settings.CHANGE_THEME_INTERVAL === 0) {
+		if (Settings.themeIndex + 1 >= Settings.themeSets.length) {
+			Settings.themeIndex = 0
+		} else {
+			Settings.themeIndex++
+		}
 	}
 
 	if (Settings.DRAW_BIRD) {
@@ -179,8 +175,6 @@ Drawing order:
 
 
 }
-
-
 
 function fillCanvas(color = "#43c499") {
 	//fills the entire canvas with a single color

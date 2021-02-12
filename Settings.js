@@ -2,12 +2,10 @@ class Settings {
   //BASE SETTINGS
   static DRAW_BIRD = true
   static DRAW_WALLS = true
-  static DRAW_BACKGROUND = true
-  static DRAW_BG_ELEMENTS = true
   static DRAW_SCORE = true
   static DRAW_BORDER = true
   static DRAW_CURSOR = true
-  static SOUND_ON = true
+  static SOUND_ON = false
   static DEATH_ON = true
 
   //VELOCITY SETTINGS
@@ -18,15 +16,19 @@ class Settings {
   //CANVAS SETTINGS
   static SIZE = 1000
 
+  //THEME SETTINGS
+  //static THEMES = ["flatlands", "mountainous", "metropolis", "glacier", "cavern", "beach"]
+  static THEMES = ["flatlands", "mountainous", "beach"]
+  static THEME_COUNT = 5
+  static currentTheme = ""
+  static themeIndex = 0
+  static CHANGE_THEME_INTERVAL = 400
+
   //BACKGROUND SETTINGS
-  static bgIndex = 0
-  static CHANGE_BACKGROUND_INTERVAL = 400
-  static groundLevel = 0.3
+  static horizonLevel = 0.45
+  static horizonLevel = 0.35
 
   //BACKGROUND ELEMENT SETTINGS
-  static BG_ELEMENT_SETS = 5
-  static bgElementIndex = 0
-  static CHANCE_OF_ELEMENT = 0.7
   static bgElementSize = 0.02
 
   //BIRD SETTINGS
@@ -34,11 +36,10 @@ class Settings {
   static birdSpeed = -0.005
 
   //COLOR SETTINGS
-  static currentColors = []
+  static currentColors = {}
 
   //OBJECT ARRAYS
   static BIRD = []
   static WALLS = []
-  static BACKGROUNDS = []
-  static BG_ELEMENTS = []
+  static themeSets = []
 }

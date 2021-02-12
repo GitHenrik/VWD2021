@@ -6,7 +6,7 @@ class Plant {
    * @param {String} color Base color for the plant
    * @param {String} type Type of plant to draw
    */
-  constructor(color = "green", type = "bush") {
+  constructor(type = "bush") {
     this.y = (Math.random() * (1 - Settings.groundLevel)) + Settings.groundLevel
     this.size = Settings.bgElementSize + Math.random() / 50  //slightly different sizes with the randomization
     this.x = Math.random()
@@ -17,7 +17,7 @@ class Plant {
       Math.random() < 0.7 ? true : false,
     ]
     this.branchesSlanted = arrayOfTruths(this.deadBranches.length)
-    this.color = color
+    this.color = Settings.currentColors.plantColors[Math.floor(Math.random() * Settings.currentColors.plantColors.length)]
     this.type = type
     this.speed = Settings.BG_ELEMENT_SPEED * this.y
     this.angle = Math.floor(Math.random() * 20) - 10 // random angle to slant the plant on demand

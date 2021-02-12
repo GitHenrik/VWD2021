@@ -17,56 +17,71 @@ class BackgroundElement {
       }
     }
   }
+
+  static createBackgroundElement(theme = "flatlands") {
+    //randomize which elements this distinct background set has
+    let includeRocks = true
+    let includePlants = true
+    let includePlanets = true
+    switch (theme) {
+      case "flatlands":
+        break
+      case "mountainous":
+        includePlants = false
+      case "beach":
+        includePlanets = false
+      default:
+        break
+    }
+
+    let rockList = []
+    let plantList = []
+    let planetList = []
+
+    if (includeRocks) {
+      let rockCount = 8 + Math.ceil(Math.random() * 12) // random amount of elements, at least some
+      const types = ["arced", "bumpy", "irregular", "pebble"]
+      let points = []
+      let edges = 5 + Math.ceil(Math.random() * 7)
+      let size = Settings.bgElementSize
+      for (let i = 0; i < rockCount; i++) {
+
+        let type = types[Math.floor(Math.random() * types.length)]
+        if (type === "bumpy") {
+          points = Polygons.createPolygonPoints(edges, size, true)
+        }
+        if (type === "irregular") {
+          points = Polygons.createPolygonPoints(edges, size, true, true)
+        }
+
+        rockList.push(new Rock(Colors.randomGrayColor(), points, size, type))
+        //randomize properties for the next rock
+        edges = 5 + Math.ceil(Math.random() * 7)
+        size = Settings.bgElementSize
+      }
+    }
+    if (includePlants) {
+      let plantCount = 20 + Math.ceil(Math.random() * 20) // random amount of elements, at least some
+      const types = ["dead", "round", "triangular", "bush", "grass", "leafy"]
+      for (let i = 0; i < plantCount; i++) {
+        let type = types[Math.floor(Math.random() * types.length)]
+        plantList.push(new Plant(type))
+      }
+    }
+    if (includePlanets) {
+      let planetCount = 3 + Math.ceil(Math.random() * 3)// random amount of elements, at least some
+      const types = ["regular", "ringed", "orbited"]
+      for (let i = 0; i < planetCount; i++) {
+        let type = types[Math.floor(Math.random() * types.length)]
+        planetList.push(new Planet(Colors.randomColor(), type))
+      }
+    }
+
+    //combine all elements for this backgroundElement object, and sort them to render correctly "behind" each other
+    let elementList = rockList.concat(plantList).concat(planetList)
+    elementList.sort((current, next) => current.y - next.y)
+
+    return new BackgroundElement(elementList)
+  }
 }
 
-function createBackgroundElement() {
-  //randomize which elements this distinct background set has
-  let includeRocks = Math.random() > Settings.CHANCE_OF_ELEMENT ? false : true
-  let includePlants = Math.random() > Settings.CHANCE_OF_ELEMENT ? false : true
-
-  //if there would be nothing, default to having just one element
-  if (!includeRocks && !includePlants) {
-    includePlants = true
-  }
-
-  let rockList = []
-  let plantList = []
-
-  if (includeRocks) {
-    let rockCount = 8 + Math.ceil(Math.random() * 12) // random amount of elements, at least some
-    const types = ["arced", "bumpy", "irregular", "pebble"]
-    let points = []
-    let edges = 5 + Math.ceil(Math.random() * 7)
-    let size = Settings.bgElementSize
-    for (let i = 0; i < rockCount; i++) {
-
-      let type = types[Math.floor(Math.random() * types.length)]
-      if (type === "bumpy") {
-        points = Polygons.createPolygonPoints(edges, size, true)
-      }
-      if (type === "irregular") {
-        points = Polygons.createPolygonPoints(edges, size, true, true)
-      }
-
-      rockList.push(new Rock(Colors.randomGrayColor(), points, size, type))
-      //randomize properties for the next rock
-      edges = 5 + Math.ceil(Math.random() * 7)
-      size = Settings.bgElementSize
-    }
-  }
-  if (includePlants) {
-    let plantCount = 20 + Math.ceil(Math.random() * 20) // // random amount of elements, at least some
-    const types = ["dead", "round", "triangular", "bush", "grass", "leafy"]
-    for (let i = 0; i < plantCount; i++) {
-      let nextColor = Settings.currentColors[Math.floor(Math.random() * Settings.currentColors.length)]
-      let type = types[Math.floor(Math.random() * types.length)]
-      plantList.push(new Plant(nextColor, type))
-    }
-  }
-
-  //combine all elements for this backgroundElement object, and sort them to render correctly "behind" each other
-  let elementList = rockList.concat(plantList)
-  elementList.sort((current, next) => current.y - next.y)
-
-  Settings.BG_ELEMENTS.push(new BackgroundElement(elementList))
-}

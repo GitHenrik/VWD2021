@@ -25,7 +25,7 @@ class Settings {
   static CHANGE_THEME_INTERVAL = 400
 
   //BACKGROUND SETTINGS
-  static horizonLevel = 0.45
+  static groundLevel = 0.45
   static horizonLevel = 0.35
 
   //BACKGROUND ELEMENT SETTINGS

@@ -1,4 +1,3 @@
-//TODO: refaktoroi silleen, että väriskene tulee tyypistä? -> sopii teemaan
 class Background {
   constructor(theme = "flatlands") {
     this.skyColor = Settings.currentColors.skyColor
@@ -120,7 +119,7 @@ class Background {
   }
 
   /**
-   * Creates a background of the specified type, or one of a basic type, if not specified
+   * Creates a background of the specified type
    * @param {String} theme
    */
   static createBackground(theme) {

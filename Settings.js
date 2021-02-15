@@ -1,12 +1,13 @@
 class Settings {
   //BASE SETTINGS
-  static DRAW_BIRD = true
+  static DRAW_BIRD = false
   static DRAW_WALLS = true
   static DRAW_SCORE = true
   static DRAW_BORDER = true
   static DRAW_CURSOR = true
   static SOUND_ON = false
   static DEATH_ON = true
+  static DRAW_WEATHER = true
 
   //VELOCITY SETTINGS
   static GRAVITY = 0.0005
@@ -19,14 +20,23 @@ class Settings {
   //THEME SETTINGS
   //static THEMES = ["flatlands", "mountainous", "metropolis", "glacier", "cavern", "beach"]
   static THEMES = ["flatlands", "mountainous", "beach"]
-  static THEME_COUNT = 5
+  static themeSets = []
   static currentTheme = ""
-  static themeIndex = 0
+  static themeIndex = Math.floor(Math.random() * Settings.themeSets.length)
   static CHANGE_THEME_INTERVAL = 400
+
+  //WEATHER SETTINGS
+  static WEATHER_TYPES = ["clear", "rainy", "foggy", "sunny"]
+  static WEATHER_COUNT = 20
+  static weathers = []
+  static weatherIndex = 0
+  static RAINDROP_COUNT = 100
+  static FOG_HEIGHT = 1.2
+  static SUN_STRENGTH = 1.5
 
   //BACKGROUND SETTINGS
   static groundLevel = 0.45
-  static horizonLevel = 0.35
+  static horizonLevel = Settings.groundLevel - 0.1
 
   //BACKGROUND ELEMENT SETTINGS
   static bgElementSize = 0.02
@@ -41,5 +51,6 @@ class Settings {
   //OBJECT ARRAYS
   static BIRD = []
   static WALLS = []
-  static themeSets = []
+
+
 }

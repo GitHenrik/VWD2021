@@ -8,7 +8,6 @@ class BackgroundElement {
     this.elementList = elementList
   }
   draw(ctx) {
-    //lists may be empty in random cases, in which case they are simply not drawn.
     for (let i = 0; i < this.elementList.length; i++) {
       this.elementList[i].draw(ctx)
       this.elementList[i].x -= this.elementList[i].speed
@@ -19,7 +18,6 @@ class BackgroundElement {
   }
 
   static createBackgroundElement(theme = "flatlands") {
-    //randomize which elements this distinct background set has
     let includeRocks = true
     let includePlants = true
     let includePlanets = true
@@ -54,7 +52,7 @@ class BackgroundElement {
           points = Polygons.createPolygonPoints(edges, size, true, true)
         }
 
-        rockList.push(new Rock(Colors.randomGrayColor(), points, size, type))
+        rockList.push(new Rock(points, size, type))
         //randomize properties for the next rock
         edges = 5 + Math.ceil(Math.random() * 7)
         size = Settings.bgElementSize

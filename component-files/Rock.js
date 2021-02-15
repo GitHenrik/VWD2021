@@ -1,10 +1,10 @@
 class Rock {
-  constructor(color = "gray", points, size, type) {
+  constructor(points, size, type) {
 
     this.y = (Math.random() * (1 - Settings.groundLevel)) + Settings.groundLevel
     this.speed = Settings.BG_ELEMENT_SPEED * this.y
     //this.blur = 3 * (1 - this.y) // Blurring is extremely inefficient in browsers, and causes lag easily
-    this.color = color
+    this.color = Colors.randomGrayColor()
     this.points = points
     this.size = size
     this.x = this.size + Math.random()

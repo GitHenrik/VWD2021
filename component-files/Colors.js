@@ -25,12 +25,6 @@ class Colors {
           plantColors: ["#FFC600"],
           largeObjectColor: "#072AC8"
         }
-      //   colorPalette.push("#072AC8")
-      //   colorPalette.push("#1E96FC")
-      //   colorPalette.push("#A2D6F9")
-      //   colorPalette.push("#FCF300")
-      //   colorPalette.push("#FFC600")
-      //   return colorPalette
       default:
         return colorPalette
     }

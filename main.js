@@ -20,6 +20,9 @@ function resetGame() {
 	while (Settings.BIRD.length > 0) {
 		Settings.BIRD.pop()
 	}
+	while (Settings.weathers.length > 0) {
+		Settings.weathers.pop()
+	}
 	while (Settings.WALLS.length > 0) {
 		Settings.WALLS.pop()
 	}
@@ -30,13 +33,18 @@ function resetGame() {
 //looppi, missä tehdään THEME SETS määrä eri juttuja. Ei tarvii sisäisiä looppeja. Nämä sitten talle netaan johonkin bg-set-olioon ehkä
 function initializeElements() {
 	//initialize themed background sets
-	for (let i = 0; i < Settings.THEME_COUNT; i++) {
+	for (let i = 0; i < Settings.THEMES.length; i++) {
 		Settings.currentTheme = Settings.THEMES[Math.floor(Math.random() * Settings.THEMES.length)]
 		Settings.currentColors = Colors.createColorPalette(Settings.currentTheme)
 		let background = Background.createBackground(Settings.currentTheme)
 		let backgroundElements = BackgroundElement.createBackgroundElement(Settings.currentTheme)
 		Settings.themeSets.push(new ThemeSet(background, backgroundElements))
 
+	}
+
+	//initialize weathers
+	for (let i = 0; i < Settings.WEATHER_COUNT; i++) {
+		Settings.weathers.push(Weather.createWeather(Settings.WEATHER_TYPES[Math.floor(Math.random() * Settings.WEATHER_TYPES.length)]))
 	}
 
 	//initialize bird
@@ -137,6 +145,7 @@ Drawing order:
 1. background
 2. background elements
 3. bird and obstacles
+3.5. weather
 4. border
 5. score board
 6. cursor 
@@ -146,8 +155,9 @@ Drawing order:
 
 	Settings.themeSets[Settings.themeIndex].draw(ctx)
 
-	//change theme every now and then
+	//change theme and weather every now and then
 	if (GlobalVariables.currentScore % Settings.CHANGE_THEME_INTERVAL === 0) {
+		Settings.weatherIndex = Math.floor(Math.random() * Settings.weathers.length)
 		if (Settings.themeIndex + 1 >= Settings.themeSets.length) {
 			Settings.themeIndex = 0
 		} else {
@@ -163,6 +173,11 @@ Drawing order:
 			Settings.WALLS[i].draw(ctx)
 		}
 	}
+
+	if (Settings.DRAW_WEATHER) {
+		Settings.weathers[Settings.weatherIndex].draw(ctx)
+	}
+
 	if (Settings.DRAW_BORDER) {
 		Border.drawBorder(ctx)
 	}

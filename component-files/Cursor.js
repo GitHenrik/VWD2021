@@ -4,8 +4,8 @@ function clickedWall(wall) {
   let leftUpper = wall.corners.leftUpper
   let rightBottom = wall.corners.rightBottom
 
-  if (GlobalVariables.mouseX > leftUpper[0] && GlobalVariables.mouseX < rightBottom[0]) {
-    if (GlobalVariables.mouseY > leftUpper[1] && GlobalVariables.mouseY < rightBottom[1]) {
+  if (GlobalVariables.mouseX/1000 > leftUpper[0] && GlobalVariables.mouseX/1000 < rightBottom[0]) {
+    if (GlobalVariables.mouseY/1000 > leftUpper[1] && GlobalVariables.mouseY/1000 < rightBottom[1]) {
       return true
     }
   }
@@ -16,6 +16,7 @@ function mouseMoved(event) {
   mouseCoordinates = getMousePos(canvas, event)
   GlobalVariables.mouseX = mouseCoordinates.x
   GlobalVariables.mouseY = mouseCoordinates.y
+
 }
 
 function getMousePos(canvas, evt) {
@@ -59,12 +60,13 @@ function drawCursor(ctx) {
 function clicked(event) {
   let canvas = document.getElementById("main-canvas")
   mouseCoordinates = getMousePos(canvas, event)
-  GlobalVariables.mouseX = mouseCoordinates.x / 1000
-  GlobalVariables.mouseY = mouseCoordinates.y / 1000
+  //GlobalVariables.mouseX = mouseCoordinates.x / 1000
+  //GlobalVariables.mouseY = mouseCoordinates.y / 1000
 
   for (let i = 0; i < Settings.WALLS.length; i++) {
     if (clickedWall(Settings.WALLS[i])) {
       Settings.WALLS[i].solid = false
     }
   }
+
 }

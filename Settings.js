@@ -1,11 +1,13 @@
 class Settings {
   //BASE SETTINGS
-  static DRAW_BIRD = false
+  static DRAW_BIRD = true
   static DRAW_WALLS = true
   static DRAW_SCORE = true
   static DRAW_BORDER = true
   static DRAW_CURSOR = true
+  static DRAW_HIGHSCORE = true
   static SOUND_ON = false
+
   static DEATH_ON = true
   static DRAW_WEATHER = true
 
@@ -44,6 +46,10 @@ class Settings {
   //BIRD SETTINGS
   static birdRadius = 0.05
   static birdSpeed = -0.005
+
+  static birdEyeColor = "red"
+  static birdBodyColor = "blue"
+  static birdBeakColor = "orange"
 
   //COLOR SETTINGS
   static currentColors = {}

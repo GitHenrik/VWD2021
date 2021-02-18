@@ -8,7 +8,7 @@ function main() {
 	canvas.onclick = event => clicked(event)
 	document.addEventListener('keydown', KeyboardListener.keyPressed)
 	initializeElements()
-	animate()
+	startScreen()
 }
 
 function resetGame() {
@@ -49,7 +49,7 @@ function initializeElements() {
 
 	//initialize bird
 	if (Settings.DRAW_BIRD) {
-		Settings.BIRD.push(new Bird(0.1, 0.5, Settings.birdSpeed, Settings.birdRadius))
+		Settings.BIRD.push(new Bird(0.1, 0.5, Settings.birdSpeed, Settings.birdRadius, Settings.birdEyeColor, Settings.birdBodyColor, Settings.birdBeakColor))
 	}
 
 	//initialize walls
@@ -109,6 +109,21 @@ function animate() {
 		endGame()
 	} else {
 		GlobalVariables.currentScore++
+
+
+		//count highscore 
+		sessionStorage.setItem("finalScore", Math.floor(GlobalVariables.currentScore / 100))
+		var finaali = sessionStorage.getItem("finalScore")
+		var finalScore = Number(finaali)
+		var previousHighScore = sessionStorage.getItem("highScore")
+		var highScore = Number(previousHighScore)
+
+		if (finalScore >= highScore) {
+
+			sessionStorage.setItem("highScore", sessionStorage.getItem("finalScore"))
+		}
+
+
 		GlobalVariables.animationId = window.requestAnimationFrame(animate)
 	}
 }
@@ -183,6 +198,9 @@ Drawing order:
 	}
 	if (Settings.DRAW_SCORE) {
 		ScoreCounter.drawScorecounter(ctx)
+	}
+	if (Settings.DRAW_HIGHSCORE) {
+		HighScoreCounter.drawHighScore(ctx)
 	}
 	if (Settings.DRAW_CURSOR) {
 		drawCursor(ctx)

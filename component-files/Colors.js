@@ -5,9 +5,19 @@ class Colors {
       skyColor: "#A2D6F9",
       groundColor: "#7DD181",
       plantColors: ["#4B7F52", "#96E8BC"],
-      largeObjectColor: "gray"
+      largeObjectColor: "gray",
+      effectColor: "#FFFFFF"
     }
     switch (theme) {
+      case "icy":
+        colorPalette = {
+          skyColor: "#575757",
+          groundColor: "#FFFFFF",
+          plantColors: ["#52d7ff", "#b0fffc"],
+          largeObjectColor: "gray",
+          effectColor: "#FFFFFF"
+        }
+        return colorPalette
       case "flatlands":
         return colorPalette
       case "mountainous":
@@ -15,16 +25,28 @@ class Colors {
           skyColor: "#C4B7CB",
           groundColor: "#BBC7CE",
           plantColors: ["#BFEDEF", "#98E2C6"],
-          largeObjectColor: "#545C52"
+          largeObjectColor: "#545C52",
+          effectColor: "#FFFFFF"
         }
         return colorPalette
       case "beach":
         colorPalette = {
           skyColor: "#1E96FC",
-          groundColor: "#FCF300",
+          groundColor: "#FCFC00",
           plantColors: ["#FFC600"],
-          largeObjectColor: "#072AC8"
+          largeObjectColor: "#072AC8",
+          effectColor: "#FFC600"
         }
+        return colorPalette
+      case "city":
+        colorPalette = {
+          skyColor: "#0c132e",
+          groundColor: "#080b12",
+          plantColors: ["#5d807f"],
+          largeObjectColor: "#273c50",
+          effectColor: "#5d807f"
+        }
+        return colorPalette
       default:
         return colorPalette
     }

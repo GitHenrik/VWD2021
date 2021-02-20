@@ -26,8 +26,17 @@ class BackgroundElement {
         break
       case "mountainous":
         includePlants = false
+        break
       case "beach":
         includePlanets = false
+        includePlants = false
+        break
+      case "city":
+        includePlants = false
+        includeRocks = false
+        break
+      case "icy":
+        break
       default:
         break
     }

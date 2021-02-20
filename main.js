@@ -20,9 +20,6 @@ function resetGame() {
 	while (Settings.BIRD.length > 0) {
 		Settings.BIRD.pop()
 	}
-	while (Settings.weathers.length > 0) {
-		Settings.weathers.pop()
-	}
 	while (Settings.WALLS.length > 0) {
 		Settings.WALLS.pop()
 	}
@@ -30,21 +27,17 @@ function resetGame() {
 	animate()
 }
 
-//looppi, missä tehdään THEME SETS määrä eri juttuja. Ei tarvii sisäisiä looppeja. Nämä sitten talle netaan johonkin bg-set-olioon ehkä
 function initializeElements() {
+	Settings.themeIndex = Math.floor(Math.random() * Settings.THEMES.length)
+	Weather.setRandomWeather()
+	Weather.initializeRain()
+
 	//initialize themed background sets
 	for (let i = 0; i < Settings.THEMES.length; i++) {
-		Settings.currentTheme = Settings.THEMES[Math.floor(Math.random() * Settings.THEMES.length)]
-		Settings.currentColors = Colors.createColorPalette(Settings.currentTheme)
-		let background = Background.createBackground(Settings.currentTheme)
-		let backgroundElements = BackgroundElement.createBackgroundElement(Settings.currentTheme)
+		Settings.currentColors = Colors.createColorPalette(Settings.THEMES[i])
+		let background = Background.createBackground(Settings.THEMES[i])
+		let backgroundElements = BackgroundElement.createBackgroundElement(Settings.THEMES[i])
 		Settings.themeSets.push(new ThemeSet(background, backgroundElements))
-
-	}
-
-	//initialize weathers
-	for (let i = 0; i < Settings.WEATHER_COUNT; i++) {
-		Settings.weathers.push(Weather.createWeather(Settings.WEATHER_TYPES[Math.floor(Math.random() * Settings.WEATHER_TYPES.length)]))
 	}
 
 	//initialize bird
@@ -54,7 +47,7 @@ function initializeElements() {
 
 	//initialize walls
 	if (Settings.DRAW_WALLS) {
-		Settings.WALLS.push(generateWall())
+		Settings.WALLS.push(generateWall(Settings.THEMES[Settings.themeIndex]))
 	}
 
 
@@ -77,13 +70,14 @@ function arrayOfTruths(length) {
 function animate() {
 	/**
 		* 1. draws everything
-	* 2. moves stuff around
+			* 2. moves stuff around
+				-> check death
 		* 3. recursive call
 		*/
 	drawGame()
 
 	if (GlobalVariables.currentScore % 150 === 0 && Settings.DRAW_WALLS) {
-		Settings.WALLS.push(generateWall())
+		Settings.WALLS.push(generateWall(Settings.THEMES[Settings.themeIndex]))
 	}
 
 	//bird tippuu painovoiman mukaisesti kiihtyen
@@ -113,8 +107,8 @@ function animate() {
 
 		//count highscore 
 		sessionStorage.setItem("finalScore", Math.floor(GlobalVariables.currentScore / 100))
-		var finaali = sessionStorage.getItem("finalScore")
-		var finalScore = Number(finaali)
+		var final = sessionStorage.getItem("finalScore")
+		var finalScore = Number(final)
 		var previousHighScore = sessionStorage.getItem("highScore")
 		var highScore = Number(previousHighScore)
 
@@ -169,11 +163,10 @@ Drawing order:
 	let ctx = canvas.getContext("2d")
 
 	Settings.themeSets[Settings.themeIndex].draw(ctx)
-
-	//change theme and weather every now and then
+	//change theme and randomised weather every now and then
 	if (GlobalVariables.currentScore % Settings.CHANGE_THEME_INTERVAL === 0) {
-		Settings.weatherIndex = Math.floor(Math.random() * Settings.weathers.length)
-		if (Settings.themeIndex + 1 >= Settings.themeSets.length) {
+		Weather.setRandomWeather()
+		if (Settings.themeIndex + 1 >= Settings.THEMES.length) {
 			Settings.themeIndex = 0
 		} else {
 			Settings.themeIndex++
@@ -190,7 +183,23 @@ Drawing order:
 	}
 
 	if (Settings.DRAW_WEATHER) {
-		Settings.weathers[Settings.weatherIndex].draw(ctx)
+		switch (Settings.THEMES[Settings.themeIndex]) {
+			case "city":
+				Weather.drawRain(ctx)
+				break
+			case "flatlands":
+				Weather.drawRain(ctx)
+				break
+			case "mountainous":
+				Weather.drawFog(ctx)
+				break
+			case "beach":
+				Weather.drawSun(ctx)
+				break
+			case "icy": //default, clear weather
+			default: //clear weather
+				break
+		}
 	}
 
 	if (Settings.DRAW_BORDER) {
@@ -205,8 +214,6 @@ Drawing order:
 	if (Settings.DRAW_CURSOR) {
 		drawCursor(ctx)
 	}
-
-
 }
 
 function fillCanvas(color = "#43c499") {

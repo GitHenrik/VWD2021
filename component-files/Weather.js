@@ -1,37 +1,57 @@
 class Weather {
-  constructor(weatherComponentList) {
-    this.weatherComponentList = weatherComponentList
+  static drawFog(ctx) {
+    ctx.save()
+    ctx.beginPath()
+    let fillGradient = ctx.createLinearGradient(0, 1, 0, -1)
+    fillGradient.addColorStop(0, "rgba(255,255,255,0.95)")
+    fillGradient.addColorStop(1, "rgba(255,255,255,0)")
+    ctx.fillStyle = fillGradient
+    ctx.rect(0, 0, 1, 1)
+    ctx.fill()
+    ctx.restore()
   }
-  draw(ctx) {
-    if (this.weatherComponentList.length === 0) {
-      return
-    }
-    for (let i = 0; i < this.weatherComponentList.length; i++) {
-      this.weatherComponentList[i].draw(ctx)
+  static drawSun(ctx) {
+
+    ctx.save()
+    ctx.beginPath()
+    let radialGradient = ctx.createRadialGradient(0, 0, 0.2, 0, 0, Settings.SUN_STRENGTH)
+    radialGradient.addColorStop(0, "rgba(255, 255, 0, 0.8)")
+    radialGradient.addColorStop(1, "rgba(255, 230, 0, 0)")
+    ctx.fillStyle = radialGradient
+    ctx.fillRect(0, 0, 1, 1)
+    ctx.restore()
+
+  }
+  static drawRain(ctx) {
+    for (let i = 0; i < GlobalVariables.raindrops.length; i++) {
+      GlobalVariables.raindrops[i].draw(ctx)
     }
   }
-  static createWeather(type = "rainy") {
-    switch (type) {
-      case "rainy":
-        //Rainy weather with a pseudo-random amount of raindrops to vary the thickness
-        let raindrops = []
-        let raindropCount = Settings.RAINDROP_COUNT + Math.floor(Math.random() * 100)
-        for (let i = 0; i < raindropCount; i++) {
-          raindrops.push(new Raindrop())
-        }
-        return new Weather(raindrops)
+  static drawRandomWeather(ctx) {
+    switch (Settings.randomWeather) {
       case "foggy":
-        //Foggy weather creates a foggy filter over the elements
-        return new Weather([new Fog()])
+        Weather.drawFog(ctx)
+        break
       case "sunny":
-        //sunny weather creates a warm-colored aura
-        return new Weather([new Sun()])
-      case "clear":
-        //Clear weather does not affect the viewport
-        return new Weather([])
+        Weather.drawSun(ctx)
+        break
+      case "rainy":
+        Weather.drawRain(ctx)
+        break
+      case "clear": //don't draw weather in this case
       default:
-        //Clear weather by default
-        return new Weather([])
+        break
     }
+  }
+  static setRandomWeather() {
+    Settings.randomWeather = Settings.WEATHER_TYPES[Math.floor(Math.random() * Settings.WEATHER_TYPES.length)]
+  }
+  static initializeRain() {
+    let raindropArray = []
+    let raindropCount = 100 + Math.floor(Math.random() * 100)
+    for (let i = 0; i < raindropCount; i++) {
+      raindropArray.push(new Raindrop())
+    }
+    GlobalVariables.raindrops = raindropArray
   }
 }

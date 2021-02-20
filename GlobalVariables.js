@@ -9,4 +9,7 @@ class GlobalVariables {
   // SCORE
   static currentScore = 1
 
+  // OBJECTS
+  static raindrops = []
+
 }

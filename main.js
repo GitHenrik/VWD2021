@@ -188,7 +188,7 @@ Drawing order:
 				Weather.drawRain(ctx)
 				break
 			case "flatlands":
-				Weather.drawRain(ctx)
+				Weather.drawRandomWeather(ctx)
 				break
 			case "mountainous":
 				Weather.drawFog(ctx)

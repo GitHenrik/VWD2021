@@ -20,8 +20,9 @@ class Settings {
   static SIZE = 1000
 
   //THEME SETTINGS
-  //static THEMES = ["flatlands", "mountainous", "city", "glacier", "cavern", "beach"]
+  //static THEMES = ["flatlands", "mountainous", "city", "icy", "cavern", "beach"]
   static THEMES = ["icy", "flatlands", "mountainous", "beach", "city"]
+  //static THEMES = ["city"]
   static themeSets = []
   static themeIndex = 0
   static CHANGE_THEME_INTERVAL = 400
@@ -32,7 +33,7 @@ class Settings {
   static randomWeather = "clear"
 
   //BACKGROUND SETTINGS
-  static groundLevel = 0.45
+  static groundLevel = 0.5
   static horizonLevel = Settings.groundLevel - 0.1
 
   //BACKGROUND ELEMENT SETTINGS

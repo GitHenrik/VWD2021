@@ -6,6 +6,39 @@ class Background {
     this.effectColor = Settings.currentColors.effectColor
     this.theme = theme
   }
+
+  static drawShip(ctx, goingLeft = false) {
+    ctx.save()
+    if (goingLeft) {
+      ctx.scale(-1, 1)
+    }
+    ctx.beginPath()
+    ctx.fillStyle = "#FFFFFF"
+    ctx.lineWidth = 0.01
+
+    ctx.scale(0.9, 0.9)
+    //draw a sail
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0.07, 0)
+    ctx.quadraticCurveTo(0.1, -0.12, 0, -0.15)
+    ctx.closePath()
+    ctx.fill()
+    //draw a hull
+    ctx.beginPath()
+    ctx.strokeStyle = "brown"
+    ctx.moveTo(0.02, 0)
+    ctx.lineTo(0.02, 0.02)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.lineWidth = 0.005
+    ctx.fillStyle = "brown"
+    ctx.moveTo(-0.05, 0.02)
+    ctx.lineTo(0.1, 0.02)
+    ctx.quadraticCurveTo(0, 0.05, -0.05, 0.02)
+    ctx.fill()
+    ctx.restore()
+
+  }
   draw(ctx) {
     if (this.theme === "flatlands") {
       ctx.save()
@@ -49,19 +82,15 @@ class Background {
       ctx.fill()
       //mountain 2
       ctx.beginPath()
-      ctx.fillStyle = this.largeObjectColor
       ctx.moveTo(0.4, (Settings.groundLevel + Settings.horizonLevel) / 2)
       ctx.quadraticCurveTo(1, 0, 1.5, (Settings.groundLevel + Settings.horizonLevel) / 2)
-      ctx.lineWidth = 0.003
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
       //mountain 3
       ctx.beginPath()
-      ctx.fillStyle = this.largeObjectColor
       ctx.moveTo(0, (Settings.groundLevel + Settings.horizonLevel) / 2)
       ctx.quadraticCurveTo(0.3, 0.2, 0.6, (Settings.groundLevel + Settings.horizonLevel) / 2)
-      ctx.lineWidth = 0.003
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
@@ -69,7 +98,6 @@ class Background {
       ctx.beginPath()
       ctx.moveTo(-0.1, Settings.groundLevel - (Settings.groundLevel - Settings.horizonLevel) / 3)
       ctx.quadraticCurveTo(0.1, 0, 0.3, Settings.groundLevel - (Settings.groundLevel - Settings.horizonLevel) / 3)
-      ctx.lineWidth = 0.003
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
@@ -77,7 +105,6 @@ class Background {
       ctx.beginPath()
       ctx.moveTo(0.5, Settings.groundLevel)
       ctx.quadraticCurveTo(0.7, 0.2, 0.9, Settings.groundLevel)
-      ctx.lineWidth = 0.003
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
@@ -98,30 +125,35 @@ class Background {
       ctx.moveTo(0, Settings.horizonLevel)
       ctx.quadraticCurveTo(0.5, Settings.horizonLevel * 0.9, 1, Settings.horizonLevel)
       ctx.fill()
-      //draw ships
+      //draw some ships: new ship
       ctx.save()
-      ctx.beginPath()
-      ctx.fillStyle = "#FFFFFF"
-      ctx.lineWidth = 0.01
       ctx.translate(0.7, (Settings.horizonLevel + Settings.groundLevel) / 2)
-      //draw a sail
-      ctx.moveTo(0, 0)
-      ctx.lineTo(0.07, 0)
-      ctx.quadraticCurveTo(0.1, -0.12, 0, -0.15)
-      ctx.closePath()
-      ctx.fill()
-      ctx.beginPath()
-      ctx.strokeStyle = "brown"
-      ctx.moveTo(0.02, 0)
-      ctx.lineTo(0.02, 0.02)
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.lineWidth = 0.005
-      ctx.fillStyle = "brown"
-      ctx.moveTo(-0.05, 0.02)
-      ctx.lineTo(0.1, 0.02)
-      ctx.quadraticCurveTo(0, 0.05, -0.05, 0.02)
-      ctx.fill()
+      ctx.scale(0.8, 0.8)
+      Background.drawShip(ctx)
+      ctx.restore()
+      // new ship
+      ctx.save()
+      ctx.translate(0.2, (Settings.horizonLevel + Settings.groundLevel) / 2 - ((Settings.groundLevel - Settings.horizonLevel) / 4))
+      ctx.scale(0.55, 0.55)
+      Background.drawShip(ctx)
+      ctx.restore()
+      // new ship
+      ctx.save()
+      ctx.translate(0.4, (Settings.horizonLevel + Settings.groundLevel) / 2 - ((Settings.groundLevel - Settings.horizonLevel) / 3))
+      ctx.scale(0.3, 0.3)
+      Background.drawShip(ctx, true)
+      ctx.restore()
+      // new ship
+      ctx.save()
+      ctx.translate(0.43, (Settings.horizonLevel + Settings.groundLevel) / 2 - ((Settings.groundLevel - Settings.horizonLevel) / 2))
+      ctx.scale(0.25, 0.25)
+      Background.drawShip(ctx, true)
+      ctx.restore()
+      // new ship
+      ctx.save()
+      ctx.translate(0.5, (Settings.horizonLevel + Settings.groundLevel) / 2 - ((Settings.groundLevel - Settings.horizonLevel) / 3))
+      ctx.scale(0.2, 0.2)
+      Background.drawShip(ctx, true)
       ctx.restore()
       //draw the beach
       ctx.beginPath()
@@ -235,6 +267,46 @@ class Background {
       ctx.rect(0.95, 0, 0.07, -0.15)
       ctx.fill()
       ctx.stroke()
+      //draw some windows 
+      ctx.fillStyle = "yellow"
+      ctx.fillRect(0.02, -0.18, 0.02, 0.03)
+      ctx.fillRect(0.02, -0.14, 0.02, 0.03)
+      ctx.fillRect(0.05, -0.22, 0.02, 0.03)
+      ctx.fillRect(0.1, -0.12, 0.02, 0.03)
+      ctx.fillRect(0.13, -0.12, 0.02, 0.03)
+      ctx.fillRect(0.19, -0.12, 0.02, 0.03)
+      ctx.fillRect(0.21, -0.19, 0.02, 0.028)
+      ctx.fillRect(0.215, -0.08, 0.02, 0.03)
+      ctx.fillRect(0.25, -0.19, 0.02, 0.03)
+      ctx.fillRect(0.31, -0.07, 0.02, 0.03)
+      ctx.fillRect(0.38, -0.07, 0.02, 0.028)
+      ctx.fillRect(0.38, -0.03, 0.02, 0.015)
+      ctx.fillRect(0.43, -0.146, 0.018, 0.015)
+      ctx.fillRect(0.46, -0.2, 0.02, 0.03)
+      ctx.fillRect(0.5, -0.2, 0.02, 0.03)
+      ctx.fillRect(0.5, -0.16, 0.02, 0.03)
+      ctx.fillRect(0.55, -0.25, 0.02, 0.03)
+      ctx.fillRect(0.55, -0.077, 0.02, 0.016)
+      ctx.fillRect(0.59, -0.05, 0.02, 0.015)
+      ctx.fillRect(0.62, -0.05, 0.02, 0.015)
+      ctx.fillRect(0.62, -0.03, 0.02, 0.015)
+      ctx.fillRect(0.65, -0.05, 0.02, 0.015)
+      ctx.fillRect(0.69, -0.09, 0.02, 0.015)
+      ctx.fillRect(0.72, -0.15, 0.02, 0.03)
+      ctx.fillRect(0.75, -0.1, 0.02, 0.03)
+      ctx.fillRect(0.75, -0.2, 0.02, 0.03)
+      ctx.fillRect(0.82, -0.07, 0.02, 0.015)
+      ctx.fillRect(0.85, -0.07, 0.02, 0.015)
+      ctx.fillRect(0.85, -0.03, 0.02, 0.015)
+      ctx.fillRect(0.88, -0.105, 0.02, 0.015)
+      ctx.fillRect(0.88, -0.2, 0.02, 0.03)
+      ctx.fillRect(0.92, -0.15, 0.02, 0.03)
+      ctx.fillRect(0.925, -0.22, 0.02, 0.015)
+      ctx.fillRect(0.925, -0.2, 0.02, 0.03)
+      ctx.fillRect(0.95, -0.20, 0.02, 0.03)
+      ctx.fillRect(0.95, -0.22, 0.02, 0.015)
+      ctx.fillRect(0.97, -0.1, 0.02, 0.015)
+      ctx.fillRect(0.97, -0.13, 0.02, 0.015)
       ctx.restore()
     }
   }

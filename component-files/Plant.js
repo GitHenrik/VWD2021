@@ -88,7 +88,7 @@ class Plant {
 
   draw(ctx) {
     ctx.save()
-    ctx.translate(this.x, this.y)
+    ctx.translate(this.x, Settings.groundLevel + this.y - Settings.initialGroundlevel)
     if (this.type === "dead") {
       ctx.rotate(this.angle * Math.PI / 180)
       this.drawOnlyBranches(ctx)

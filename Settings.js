@@ -7,7 +7,6 @@ class Settings {
   static DRAW_CURSOR = true
   static DRAW_HIGHSCORE = true
   static SOUND_ON = false
-
   static DEATH_ON = false
   static DRAW_WEATHER = true
 
@@ -16,13 +15,14 @@ class Settings {
   static WALL_SPEED = 0.003
   static BG_ELEMENT_SPEED = 0.002
 
+
   //CANVAS SETTINGS
   static SIZE = 1000
 
   //THEME SETTINGS
   //static THEMES = ["flatlands", "mountainous", "city", "icy", "cavern", "beach"]
   static THEMES = ["icy", "flatlands", "mountainous", "beach", "city"]
-  //static THEMES = ["city"]
+  //static THEMES = ["mountainous"]
   static themeSets = []
   static themeIndex = 0
   static CHANGE_THEME_INTERVAL = 400
@@ -33,8 +33,11 @@ class Settings {
   static randomWeather = "clear"
 
   //BACKGROUND SETTINGS
-  static groundLevel = 0.5
+  static initialGroundlevel = 0.5
+  static groundLevel = Settings.initialGroundlevel
   static horizonLevel = Settings.groundLevel - 0.1
+  static DYNAMIC_BACKGROUND = true
+  static dynamicMultiplier = -0.1
 
   //BACKGROUND ELEMENT SETTINGS
   static bgElementSize = 0.02

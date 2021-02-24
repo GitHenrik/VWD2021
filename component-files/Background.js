@@ -75,7 +75,7 @@ class Background {
       ctx.beginPath()
       ctx.fillStyle = this.largeObjectColor
       ctx.moveTo(0, Settings.horizonLevel)
-      ctx.quadraticCurveTo(0.5, 0, 1, Settings.horizonLevel)
+      ctx.quadraticCurveTo(0.5, Settings.horizonLevel - 0.4, 1, Settings.horizonLevel)
       ctx.lineWidth = 0.003
       ctx.stroke()
       ctx.closePath()
@@ -83,28 +83,28 @@ class Background {
       //mountain 2
       ctx.beginPath()
       ctx.moveTo(0.4, (Settings.groundLevel + Settings.horizonLevel) / 2)
-      ctx.quadraticCurveTo(1, 0, 1.5, (Settings.groundLevel + Settings.horizonLevel) / 2)
+      ctx.quadraticCurveTo(1, Settings.horizonLevel - 0.4, 1.5, (Settings.groundLevel + Settings.horizonLevel) / 2)
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
       //mountain 3
       ctx.beginPath()
       ctx.moveTo(0, (Settings.groundLevel + Settings.horizonLevel) / 2)
-      ctx.quadraticCurveTo(0.3, 0.2, 0.6, (Settings.groundLevel + Settings.horizonLevel) / 2)
+      ctx.quadraticCurveTo(0.3, Settings.horizonLevel - 0.25, 0.6, (Settings.groundLevel + Settings.horizonLevel) / 2)
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
       //mountain 4
       ctx.beginPath()
       ctx.moveTo(-0.1, Settings.groundLevel - (Settings.groundLevel - Settings.horizonLevel) / 3)
-      ctx.quadraticCurveTo(0.1, 0, 0.3, Settings.groundLevel - (Settings.groundLevel - Settings.horizonLevel) / 3)
+      ctx.quadraticCurveTo(0.1, Settings.horizonLevel - 0.4, 0.3, Settings.groundLevel - (Settings.groundLevel - Settings.horizonLevel) / 3)
       ctx.stroke()
       ctx.closePath()
       ctx.fill()
       //mountain 5
       ctx.beginPath()
       ctx.moveTo(0.5, Settings.groundLevel)
-      ctx.quadraticCurveTo(0.7, 0.2, 0.9, Settings.groundLevel)
+      ctx.quadraticCurveTo(0.7, Settings.horizonLevel - 0.25, 0.9, Settings.groundLevel)
       ctx.stroke()
       ctx.closePath()
       ctx.fill()

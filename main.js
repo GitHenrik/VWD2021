@@ -28,6 +28,8 @@ function resetGame() {
 }
 
 function initializeElements() {
+	Settings.groundLevel = Settings.initialGroundlevel
+	Settings.horizonLevel = Settings.groundLevel - 0.1
 	Settings.themeIndex = Math.floor(Math.random() * Settings.THEMES.length)
 	Weather.setRandomWeather()
 	Weather.initializeRain()
@@ -52,6 +54,7 @@ function initializeElements() {
 
 
 	GlobalVariables.currentScore = 1
+
 
 }
 
@@ -87,6 +90,13 @@ function animate() {
 			Settings.BIRD[0].speed = 0.02
 		}
 		Settings.BIRD[0].y += Settings.BIRD[0].speed
+		//Makes bird stay visible even if invincibility is turned on
+		if (Settings.BIRD[0].y > 1) {
+			Settings.BIRD[0].y = 1
+		}
+		if (Settings.BIRD[0].y < 0) {
+			Settings.BIRD[0].y = 0
+		}
 	}
 
 	if (Settings.DRAW_WALLS) {
@@ -175,6 +185,12 @@ Drawing order:
 
 	if (Settings.DRAW_BIRD) {
 		Settings.BIRD[0].draw(ctx)
+		if (Settings.DYNAMIC_BACKGROUND) {
+			let groundModifier = Settings.dynamicMultiplier * (-0.5 + Settings.BIRD[0].y) // -0.5 ... 0.5
+			Settings.groundLevel = 0.5 + groundModifier
+			Settings.horizonLevel = Settings.groundLevel - 0.1
+		}
+
 	}
 	if (Settings.DRAW_WALLS) {
 		for (let i = 0; i < Settings.WALLS.length; i++) {

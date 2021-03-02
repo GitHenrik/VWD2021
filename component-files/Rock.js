@@ -3,7 +3,6 @@ class Rock {
 
     this.y = (Math.random() * (1 - Settings.groundLevel)) + Settings.groundLevel
     this.speed = Settings.BG_ELEMENT_SPEED * this.y
-    //this.blur = 3 * (1 - this.y) // Blurring is extremely inefficient in browsers, and causes lag easily
     this.color = Colors.randomGrayColor()
     this.points = points
     this.size = size
@@ -15,15 +14,12 @@ class Rock {
     ctx.save()
     ctx.fillStyle = this.color
     if (this.type === "arced") {
-
-      //ctx.filter = 'blur(' + this.blur + 'px)'
       ctx.beginPath()
       ctx.translate(this.x, Settings.groundLevel + this.y - Settings.initialGroundlevel)
       ctx.arc(0, 0, this.size, Math.PI, 2 * Math.PI)
       ctx.fill()
       ctx.lineWidth = 0.003
       ctx.stroke()
-
     }
     else if (this.type === "pebble") {
       ctx.translate(this.x, Settings.groundLevel + this.y - Settings.initialGroundlevel)

@@ -11,7 +11,6 @@ class KeyboardListener {
     }
     if (key.code === "KeyR") {
       resetGame()
-      //something.play()
     }
   }
 }

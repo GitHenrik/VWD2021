@@ -6,26 +6,24 @@ class Settings {
   static DRAW_BORDER = true
   static DRAW_CURSOR = true
   static DRAW_HIGHSCORE = true
-  static SOUND_ON = false
-  static DEATH_ON = false
+  static SOUND_ON = true
+  static DEATH_ON = true
   static DRAW_WEATHER = true
 
   //VELOCITY SETTINGS
   static GRAVITY = 0.0005
-  static WALL_SPEED = 0.003
-  static BG_ELEMENT_SPEED = 0.002
 
+  static BG_ELEMENT_SPEED = 0.0022
+  static WALL_SPEED = Settings.BG_ELEMENT_SPEED * 1.5
 
   //CANVAS SETTINGS
   static SIZE = 1000
 
   //THEME SETTINGS
-  //static THEMES = ["flatlands", "mountainous", "city", "icy", "cavern", "beach"]
   static THEMES = ["icy", "flatlands", "mountainous", "beach", "city"]
-  //static THEMES = ["mountainous"]
   static themeSets = []
   static themeIndex = 0
-  static CHANGE_THEME_INTERVAL = 400
+  static CHANGE_THEME_INTERVAL = 600
 
   //WEATHER SETTINGS
   static WEATHER_TYPES = ["clear", "rainy", "foggy", "sunny"]
@@ -37,17 +35,18 @@ class Settings {
   static groundLevel = Settings.initialGroundlevel
   static horizonLevel = Settings.groundLevel - 0.1
   static DYNAMIC_BACKGROUND = true
-  static dynamicMultiplier = -0.1
+  static dynamicMultiplier = -0.025
 
   //BACKGROUND ELEMENT SETTINGS
   static bgElementSize = 0.02
 
   //BIRD SETTINGS
-  static birdRadius = 0.05
+  static birdRadiusX = 0.05
+  static birdRadiusY = 0.05
   static birdSpeed = -0.005
 
-  static birdEyeColor = "red"
-  static birdBodyColor = "blue"
+  static birdEyeColor = "white"
+  static birdBodyColor = "yellow"
   static birdBeakColor = "orange"
 
   //COLOR SETTINGS

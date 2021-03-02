@@ -9,6 +9,7 @@ class Planet {
     this.ringPoints = Polygons.createPolygonPoints(4, this.size)
     this.ringColor = Colors.randomColor(0.7)
     this.rotation = Math.ceil(Math.random() * 180) * Math.PI / 180
+    this.orbitClockwise = Math.random() < 0.5 ? true : false
   }
 
   drawBasePlanet(ctx) {
@@ -45,7 +46,7 @@ class Planet {
       ctx.beginPath()
       ctx.translate(this.x, Settings.groundLevel + this.y - Settings.initialGroundlevel)
       ctx.rotate(this.rotation)
-      this.rotation += Math.PI / 180
+      this.orbitClockwise ? this.rotation += Math.PI / 180 : this.rotation -= Math.PI / 180
       ctx.arc(this.size * 1.2, this.size * 1.2, this.size / 4, 0, 2 * Math.PI)
       ctx.fillStyle = this.color
       ctx.fill()

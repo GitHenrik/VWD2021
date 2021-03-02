@@ -1,4 +1,5 @@
 //source: w3Schools.com
+const AUDIO_CONTEXT = new (AudioContext || window.webkitAudioContext)();
 class Audio {
   constructor(src) {
     this.Audio = document.createElement("audio")

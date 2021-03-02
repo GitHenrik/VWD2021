@@ -4,8 +4,8 @@ function clickedWall(wall) {
   let leftUpper = wall.corners.leftUpper
   let rightBottom = wall.corners.rightBottom
 
-  if (GlobalVariables.mouseX/1000 > leftUpper[0] && GlobalVariables.mouseX/1000 < rightBottom[0]) {
-    if (GlobalVariables.mouseY/1000 > leftUpper[1] && GlobalVariables.mouseY/1000 < rightBottom[1]) {
+  if (GlobalVariables.mouseX / 1000 > leftUpper[0] && GlobalVariables.mouseX / 1000 < rightBottom[0]) {
+    if (GlobalVariables.mouseY / 1000 > leftUpper[1] && GlobalVariables.mouseY / 1000 < rightBottom[1]) {
       return true
     }
   }
@@ -65,7 +65,19 @@ function clicked(event) {
 
   for (let i = 0; i < Settings.WALLS.length; i++) {
     if (clickedWall(Settings.WALLS[i])) {
-      Settings.WALLS[i].solid = false
+
+      if (Settings.WALLS[i].solid) {
+        Sounds.playSoundShoot()
+        Settings.WALLS[i].solid = false
+      }
+      // change shape and reset 
+      Settings.BIRD[0].changeShape()
+
+      setTimeout(function () {
+        Settings.BIRD[0].resetShape()
+      }, 200)
+
+
     }
   }
 

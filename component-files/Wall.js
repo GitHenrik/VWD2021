@@ -9,8 +9,6 @@ class Wall {
     this.corners = new Corners(x, width, holeStart, holeSize)
     this.type = type
   }
-
-
   draw(ctx) {
     if (this.type === "flatlands") {
       if (!this.solid) {
@@ -68,40 +66,112 @@ class Wall {
     }
 
     if (this.type === "icy") {
+      let yTop = this.holeStart
+      let yBottom = this.holeStart + this.holeSize
+      let pointSize = this.width * 2
+
       if (!this.solid) {
+
+        //rectangle parts
         ctx.save()
         ctx.beginPath()
         ctx.fillStyle = "#99FFFF"
-        ctx.rect(this.x, 0, this.width, this.holeStart)
-        ctx.rect(this.x, this.holeStart + this.holeSize, this.width, 1 - this.holeStart - this.holeSize)
+        ctx.rect(this.x, this.holeStart + this.holeSize + pointSize, this.width, 1 - this.holeStart - this.holeSize)
+        ctx.rect(this.x, 0, this.width, this.holeStart - pointSize)
         ctx.fill()
-        ctx.lineWidth = 0.01
+        ctx.strokeStyle = "#99FFFF"
+        ctx.lineWidth = 0.005
         ctx.stroke()
-
-        //Decoration
-
-
         ctx.restore()
+
+        //upper pointy end
+        ctx.save()
+        ctx.beginPath()
+        ctx.moveTo(this.x, this.holeStart - pointSize)
+        ctx.lineTo(this.x + (this.width / 2), this.holeStart)
+        ctx.lineTo(this.x + this.width, this.holeStart - pointSize)
+        ctx.strokeStyle = "#99FFFF"
+        ctx.lineWidth = 0.005
+        ctx.fillStyle = "#99FFFF"
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
+
+        //bottom pointy end
+        ctx.save()
+        ctx.beginPath()
+        ctx.moveTo(this.x, this.holeStart + this.holeSize + 0.01 + pointSize)
+        ctx.lineTo(this.x + (this.width / 2), this.holeStart + this.holeSize)
+        ctx.lineTo(this.x + this.width, this.holeStart + this.holeSize + 0.01 + pointSize)
+        ctx.strokeStyle = "#99FFFF"
+        ctx.lineWidth = 0.005
+        ctx.fillStyle = "#99FFFF"
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
+
       } else {
+        //rectangle parts
         ctx.save()
         ctx.beginPath()
         ctx.fillStyle = "#99FFFF"
-        ctx.rect(this.x, 0, this.width, this.holeStart)
-        ctx.rect(this.x, this.holeStart + this.holeSize, this.width, 1 - this.holeStart - this.holeSize)
+        ctx.rect(this.x, this.holeStart + this.holeSize + pointSize, this.width, 1 - this.holeStart - this.holeSize)
+        ctx.rect(this.x, 0, this.width, this.holeStart - pointSize)
         ctx.fill()
-        ctx.lineWidth = 0.01
+        ctx.strokeStyle = "#99FFFF"
+        ctx.lineWidth = 0.005
         ctx.stroke()
+        ctx.restore()
+
+        //upper pointy end
+        ctx.save()
+        ctx.beginPath()
+        ctx.moveTo(this.x, this.holeStart - pointSize)
+        ctx.lineTo(this.x + (this.width / 2), this.holeStart)
+        ctx.lineTo(this.x + this.width, this.holeStart - pointSize)
+        ctx.strokeStyle = "#99FFFF"
+        ctx.lineWidth = 0.005
+        ctx.fillStyle = "#99FFFF"
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
+
+        //bottom pointy end
+        ctx.save()
+        ctx.beginPath()
+        ctx.moveTo(this.x, this.holeStart + this.holeSize + 0.01 + pointSize)
+        ctx.lineTo(this.x + (this.width / 2), this.holeStart + this.holeSize)
+        ctx.lineTo(this.x + this.width, this.holeStart + this.holeSize + 0.01 + pointSize)
+        ctx.strokeStyle = "#99FFFF"
+        ctx.lineWidth = 0.005
+        ctx.fillStyle = "#99FFFF"
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
 
         //middle block
-        ctx.beginPath()
-        ctx.fillStyle = "white"
-        ctx.rect(this.x, this.holeStart, this.width, this.holeSize)
-        ctx.fill()
-        ctx.lineWidth = 0.015
-        ctx.stroke()
+        //variables for middle block
+        let middleBlockRadius = this.width / 10
+        let middleBlockY = this.holeStart + middleBlockRadius
+        let middleBlockX = this.x + middleBlockRadius
+        let amountOfSmallBlocks = Math.round(this.holeSize / (middleBlockRadius * 2))
+        for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < amountOfSmallBlocks; i++) {
+            ctx.save()
+            ctx.beginPath()
+            ctx.fillStyle = "white"
 
+            ctx.arc(middleBlockX, middleBlockY, middleBlockRadius, 0, 2 * Math.PI)
+            ctx.fill()
+            ctx.lineWidth = 0.005
+            ctx.stroke()
+            ctx.restore()
 
-        ctx.restore()
+            middleBlockY += (middleBlockRadius + middleBlockRadius)
+          }
+          middleBlockX += this.width / 5
+          middleBlockY = this.holeStart + middleBlockRadius
+        }
       }
     }
 
@@ -247,8 +317,6 @@ class Wall {
           yTop -= 0.075
         }
 
-        //obstacle bottom traffic cone single
-
         //Bottom of the traffic cone
         ctx.save()
         ctx.beginPath()
@@ -314,26 +382,40 @@ class Wall {
           yBottom += 0.075
         }
 
+        ctx.save()
+        //middle block, STOP sign in this case
+        let centerX = this.x + this.width / 2
+        let centerY = this.holeStart + this.holeSize / 2
+
+        ctx.beginPath()
+        ctx.moveTo(centerX - 0.05, centerY - 0.1)
+        ctx.lineTo(centerX + 0.05, centerY - 0.1)
+        ctx.lineTo(centerX + 0.1, centerY - 0.05)
+        ctx.lineTo(centerX + 0.1, centerY + 0.05)
+        ctx.lineTo(centerX + 0.05, centerY + 0.1)
+        ctx.lineTo(centerX - 0.05, centerY + 0.1)
+        ctx.lineTo(centerX - 0.1, centerY + 0.05)
+        ctx.lineTo(centerX - 0.1, centerY - 0.05)
+        ctx.lineTo(centerX - 0.05, centerY - 0.1)
+
+        ctx.fillStyle = "red"
+        ctx.strokeStyle = "#E0E0E0"
+        ctx.lineWidth = 0.01
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
+
+        ctx.save()
+        ctx.fillStyle = "white"
+        ctx.font = "1px Highway Gothic"
+        ctx.translate(centerX - 0.085, centerY + 0.02)
+        ctx.scale(0.07, 0.07)
+        ctx.fillText("STOP", 0, 0)
+
+        ctx.restore()
+
+
         /*
-          //middle block, STOP sign in this case
-          let centerX = this.x+this.width/2
-          let centerY = this.holeStart+this.holeSize/2
-          ctx.beginPath()
-          ctx.moveTo(centerX-0.05, centerY-0.1)
-          ctx.lineTo(centerX+0.05, centerY-0.1)
-          ctx.lineTo(centerX+0.1, centerY-0.05)
-          ctx.lineTo(centerX+0.1, centerY+0.05)
-          ctx.lineTo(centerX+0.05, centerY+0.1)
-          ctx.lineTo(centerX-0.05, centerY+0.1)
-          ctx.lineTo(centerX-0.1, centerY+0.05)
-          ctx.lineTo(centerX-0.1, centerY-0.05)
-          ctx.lineTo(centerX-0.05, centerY-0.1)
-  
-          ctx.fillStyle = "red"
-          ctx.strokeStyle = "#E0E0E0"
-          ctx.stroke()
-  
-          */
         //middle block placeholder
         ctx.beginPath()
         ctx.fillStyle = "gray"
@@ -341,7 +423,7 @@ class Wall {
         ctx.fill()
         ctx.lineWidth = 0.015
         ctx.stroke()
-
+        */
       }
     }
 
@@ -443,74 +525,143 @@ class Wall {
       }
     }
     if (this.type === "mountainous") {
+      let wallRadius = this.width / 2
+      let yBottom = this.holeStart + this.holeSize + wallRadius
+      let yTop = this.holeStart - wallRadius
+
       if (!this.solid) {
-        ctx.save()
-        ctx.beginPath()
-        ctx.fillStyle = "black"
-        ctx.rect(this.x, 0, this.width, this.holeStart)
-        ctx.rect(this.x, this.holeStart + this.holeSize, this.width, 1 - this.holeStart - this.holeSize)
-        ctx.fill()
-        ctx.lineWidth = 0.01
-        ctx.stroke()
+        //Upper part of rock wall
+        for (let i = 0; i < 10; i++) {
+          ctx.save()
+          ctx.beginPath()
+          ctx.fillStyle = "#585c5c"
 
-        //Decoration
-        ctx.save()
-        ctx.beginPath()
-        ctx.fillStyle = "green"
-        ctx.rect(this.x - 0.02, this.holeStart - 0.03, this.width + 0.04, 0.03)
-        ctx.rect(this.x - 0.02, this.holeStart + this.holeSize, this.width + 0.04, 0.03)
-        ctx.fill()
-        ctx.lineWidth = 0.01
-        ctx.stroke()
+          ctx.arc((this.x + wallRadius), yTop, wallRadius, 0, 2 * Math.PI)
+          ctx.fill()
+          ctx.lineWidth = 0.01
+          ctx.stroke()
+          ctx.restore()
 
-        ctx.restore()
+          yTop -= (wallRadius + wallRadius / 2)
+        }
+
+        //Bottom of rock wall
+        for (let i = 0; i < 10; i++) {
+          ctx.save()
+          ctx.beginPath()
+          ctx.fillStyle = "#585c5c"
+
+          ctx.arc((this.x + wallRadius), yBottom, wallRadius, 0, 2 * Math.PI)
+
+          ctx.fill()
+          ctx.lineWidth = 0.01
+          ctx.stroke()
+          ctx.restore()
+
+          yBottom += (wallRadius + wallRadius / 2)
+        }
+
+        //if there is middle wall
       } else {
-        ctx.save()
-        ctx.beginPath()
-        ctx.fillStyle = "black"
-        ctx.rect(this.x, 0, this.width, this.holeStart)
-        ctx.rect(this.x, this.holeStart + this.holeSize, this.width, 1 - this.holeStart - this.holeSize)
-        ctx.fill()
-        ctx.lineWidth = 0.01
-        ctx.stroke()
 
-        //Decoration
-        ctx.save()
-        ctx.beginPath()
-        ctx.fillStyle = "green"
-        ctx.rect(this.x - 0.02, this.holeStart - 0.03, this.width + 0.04, 0.03)
-        ctx.rect(this.x - 0.02, this.holeStart + this.holeSize, this.width + 0.04, 0.03)
-        ctx.fill()
-        ctx.lineWidth = 0.01
-        ctx.stroke()
+        //Upper part of rock wall
+        for (let i = 0; i < 10; i++) {
+          ctx.save()
+          ctx.beginPath()
+          ctx.fillStyle = "#585c5c"
+
+          ctx.arc((this.x + wallRadius), yTop, wallRadius, 0, 2 * Math.PI)
+          ctx.fill()
+          ctx.lineWidth = 0.01
+          ctx.stroke()
+          ctx.restore()
+
+          yTop -= (wallRadius + wallRadius / 2)
+        }
+
+        //Bottom of rock wall
+        for (let i = 0; i < 10; i++) {
+          ctx.save()
+          ctx.beginPath()
+          ctx.fillStyle = "#585c5c"
+
+          ctx.arc((this.x + wallRadius), yBottom, wallRadius, 0, 2 * Math.PI)
+
+          ctx.fill()
+          ctx.lineWidth = 0.01
+          ctx.stroke()
+          ctx.restore()
+
+          yBottom += (wallRadius + wallRadius / 2)
+        }
+
+        //variables for middle block
+        let middleBlockRadius = this.width / 10
+        let middleBlockY = this.holeStart + middleBlockRadius
+        let middleBlockX = this.x + middleBlockRadius
 
         //middle block
-        ctx.beginPath()
-        ctx.fillStyle = "gray"
-        ctx.rect(this.x, this.holeStart + 0.01, this.width, this.holeSize - 0.02)
-        ctx.fill()
-        ctx.lineWidth = 0.015
-        ctx.stroke()
+        let amountOfSmallBlocks = Math.round(this.holeSize / (middleBlockRadius * 2))
+        for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < amountOfSmallBlocks; i++) {
+            ctx.save()
+            ctx.beginPath()
+            ctx.fillStyle = "#4f4843"
 
+            ctx.arc(middleBlockX, middleBlockY, middleBlockRadius, 0, 2 * Math.PI)
+            ctx.fill()
+            ctx.lineWidth = 0.005
+            ctx.stroke()
+            ctx.restore()
 
-        ctx.restore()
+            middleBlockY += (middleBlockRadius + middleBlockRadius)
+          }
+          middleBlockX += this.width / 5
+          middleBlockY = this.holeStart + middleBlockRadius
+        }
+
+        //offset for layer 2 of middle block
+        middleBlockY = this.holeStart + middleBlockRadius * 2
+        middleBlockX = this.x + middleBlockRadius * 2
+        amountOfSmallBlocks--
+        let evenSmallerBlocks = middleBlockRadius / 2
+
+        //middle block layer 2
+        for (let i = 0; i < 4; i++) {
+          for (let i = 0; i < amountOfSmallBlocks; i++) {
+            ctx.save()
+            ctx.beginPath()
+            ctx.fillStyle = "#3d2d1c"
+
+            ctx.arc(middleBlockX, middleBlockY, evenSmallerBlocks, 0, 2 * Math.PI)
+            ctx.fill()
+            ctx.lineWidth = 0.005
+            ctx.stroke()
+            ctx.restore()
+
+            middleBlockY += (middleBlockRadius + middleBlockRadius)
+          }
+          middleBlockX += this.width / 5
+          middleBlockY = this.holeStart + middleBlockRadius * 2
+        }
       }
     }
   }
+  static generateWall(type) {
+    //Generates a wall object with randomized hole position and width
+    let start = Math.random();
+    if (start > 0.7) { //start of the wall cannot be at the bottom
+      start -= 0.3;
+    }
+    let holeSize = 0.25 + Math.random() / 10;
+    let holeWidth = 0.1 + Math.random() / 20;
+    let solid = Math.random() < 0.5 ? true : false
+    let wall = new Wall(1, holeWidth, start, holeSize, solid, type);
+    return wall
+  }
 }
 
-function generateWall(type) {
-  //Generates a wall object with randomized hole position and width
-  let start = Math.random();
-  if (start > 0.7) { //start of the wall cannot be at the bottom
-    start -= 0.3;
-  }
-  let holeSize = 0.25 + Math.random() / 10;
-  let holeWidth = 0.1 + Math.random() / 10;
-  let solid = Math.random() < 0.5 ? true : false
-  let wall = new Wall(1, holeWidth, start, holeSize, solid, type);
-  return wall
-}
+
 
 function moveWall(i) {
   Settings.WALLS[i].x -= Settings.WALL_SPEED
@@ -521,72 +672,125 @@ function moveWall(i) {
 }
 
 function hitWall() {
+
+  //variables for hitting round wall
+  let birdRadius = Settings.BIRD[0].radius
+  let wallRadius = Settings.WALLS[0].width / 2
+  let birdPlusWallRadius = birdRadius + wallRadius
+
   if (!Settings.DRAW_BIRD || !Settings.DRAW_WALLS) {
     return false
   }
 
-  if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x && (Settings.WALLS[0].holeStart - Settings.BIRD[0].radius) >= Settings.BIRD[0].y - Settings.BIRD[0].radius && Settings.BIRD[0].x - Settings.BIRD[0].radius <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
-    console.log("Hit top vertical wall")
-    if (Settings.SOUND_ON)
-      Sounds.hitWallSound.play()
-    return true
-  }
+  //Upper vertical wall if walls type is mountainous, it this will do two checks for the upper wall if not then one
+  if (Settings.WALLS[0].type == "mountainous" || Settings.WALLS[0].type == "icy") {
+    if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x && (Settings.WALLS[0].holeStart - Settings.WALLS[0].width * 1.5) >= Settings.BIRD[0].y - Settings.BIRD[0].radius && Settings.BIRD[0].x - Settings.BIRD[0].radius <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
 
-  // If the type of the wall is city, the collision of bottom wall will be treated differently than other wall types
-  if (Settings.WALLS[0].type == "city") {
-    if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
-      if (Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize + 0.15 <= Settings.BIRD[0].y + Settings.BIRD[0].radius) {
-        if (Settings.BIRD[0].x <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
-          console.log("Hit bottom vertical wall")
-          if (Settings.SOUND_ON) {
-            Sounds.hitWallSound.play()
-          }
-          return true
-        }
+      if (Settings.SOUND_ON)
+        Sounds.hitWallSound.play()
+      return true
+    } else {
+      if (Settings.WALLS[0].type == "mountainous" && distance([Settings.BIRD[0].x, Settings.BIRD[0].y], [Settings.WALLS[0].x + Settings.WALLS[0].width / 2, Settings.WALLS[0].holeStart - Settings.WALLS[0].width / 2]) < birdPlusWallRadius) {
+
+        if (Settings.SOUND_ON)
+          Sounds.hitWallSound.play()
+
+        return true
       }
     }
-    //For other wall types than city
   } else {
-    if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
-      if (Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize <= Settings.BIRD[0].y + Settings.BIRD[0].radius) {
-        if (Settings.BIRD[0].x <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
-          console.log("Hit bottom vertical wall")
-          if (Settings.SOUND_ON) {
-            Sounds.hitWallSound.play()
-          }
-          return true
-        }
-      }
-    }
-  }
-
-  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftUpper) < Settings.BIRD[0].radius) {
-    console.log("Hit top-left corner")
-    if (Settings.SOUND_ON)
-      Sounds.hitWallSound.play()
-    return true
-  }
-
-  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.rightUpper) < Settings.BIRD[0].radius) {
-    console.log("Hit top-right corner")
-    if (Settings.SOUND_ON)
-      Sounds.hitWallSound.play()
-    return true
-  }
-
-  // Bottom left corner is different for wall type city
-  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftBottom) < Settings.BIRD[0].radius) {
-    if (Settings.WALLS[0].type != "city") {
-      console.log("Hit bottom-left corner")
+    if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x && (Settings.WALLS[0].holeStart) >= Settings.BIRD[0].y - Settings.BIRD[0].radius && Settings.BIRD[0].x - Settings.BIRD[0].radius <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
       if (Settings.SOUND_ON)
         Sounds.hitWallSound.play()
       return true
     }
   }
+
+  if (Settings.WALLS[0].type == "icy" || Settings.WALLS[0].type == "city") {
+    if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], [Settings.WALLS[0].x + Settings.WALLS[0].width / 4, Settings.WALLS[0].holeStart - Settings.WALLS[0].width]) < birdRadius
+      || distance([Settings.BIRD[0].x, Settings.BIRD[0].y], [Settings.WALLS[0].x + Settings.WALLS[0].width * 0.75, Settings.WALLS[0].holeStart - Settings.WALLS[0].width]) < birdRadius
+      || distance([Settings.BIRD[0].x, Settings.BIRD[0].y], [Settings.WALLS[0].x + Settings.WALLS[0].width / 4, Settings.WALLS[0].holeStart + Settings.WALLS[0].width + Settings.WALLS[0].holeSize]) < birdRadius) {
+
+      if (Settings.SOUND_ON)
+        Sounds.hitWallSound.play()
+      return true
+    }
+
+  }
+
+  // If the type of the wall is city or mountainous, the collision of bottom wall will be treated differently than other wall types
+  if (Settings.WALLS[0].type == "city" || Settings.WALLS[0].type == "mountainous" || Settings.WALLS[0].type == "icy") {
+    if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
+      if (Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize + Settings.WALLS[0].width * 1.5 <= Settings.BIRD[0].y + Settings.BIRD[0].radius) {
+        if (Settings.BIRD[0].x <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
+
+          if (Settings.SOUND_ON) {
+            Sounds.hitWallSound.play()
+          }
+          return true
+        }
+      }
+    }
+    //For other wall types than city or mountainous
+  } else {
+    if (Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
+      if (Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize <= Settings.BIRD[0].y + Settings.BIRD[0].radius) {
+        if (Settings.BIRD[0].x <= Settings.WALLS[0].x + Settings.WALLS[0].width) {
+
+          if (Settings.SOUND_ON) {
+            Sounds.hitWallSound.play()
+          }
+          return true
+        }
+      }
+    }
+  }
+
+  //bottom round wall check for mountainous environment
+  if (Settings.WALLS[0].type == "mountainous") {
+    if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], [Settings.WALLS[0].x + Settings.WALLS[0].width / 2, Settings.WALLS[0].holeStart + Settings.WALLS[0].holeSize + Settings.WALLS[0].width / 2]) < birdPlusWallRadius) {
+
+      if (Settings.SOUND_ON)
+        Sounds.hitWallSound.play()
+
+      return true
+    }
+  }
+
+  //if wall type is not mountainous or icy hit top left corner
+  if (Settings.WALLS[0].type != "mountainous" || Settings.WALLS[0].type != "icy") { } else {
+    if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftUpper) < Settings.BIRD[0].radius) {
+
+      if (Settings.SOUND_ON)
+        Sounds.hitWallSound.play()
+      return true
+    }
+  }
+
+  //if wall type is not mountainous or icy hit top right corner
+  if (Settings.WALLS[0].type != "mountainous" || Settings.WALLS[0].type != "icy") { } else {
+    if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.rightUpper) < Settings.BIRD[0].radius) {
+
+      if (Settings.SOUND_ON)
+        Sounds.hitWallSound.play()
+      return true
+    }
+  }
+
+  // Bottom left corner is different for wall type city
+  if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.leftBottom) < Settings.BIRD[0].radius) {
+    if (Settings.WALLS[0].type != "city" && Settings.WALLS[0].type != "mountainous" && Settings.WALLS[0].type != "icy") {
+
+      if (Settings.SOUND_ON)
+        Sounds.hitWallSound.play()
+      return true
+    }
+  }
+
   // Bottom right corner is different for wall type city
   if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], Settings.WALLS[0].corners.rightBottom) < Settings.BIRD[0].radius) {
-    if (Settings.WALLS[0].type != "city") {
-      console.log("Hit bottom-right corner")
+    if (Settings.WALLS[0].type != "city" && Settings.WALLS[0].type != "mountainous" && Settings.WALLS[0].type != "icy") {
+
       if (Settings.SOUND_ON)
         Sounds.hitWallSound.play()
       return true
@@ -595,7 +799,7 @@ function hitWall() {
 
   let midpoint = [Settings.WALLS[0].corners.leftUpper[0] + (Settings.WALLS[0].corners.rightUpper[0] - Settings.WALLS[0].corners.leftUpper[0]) / 2, Settings.WALLS[0].corners.leftUpper[1]]
   if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], midpoint) < Settings.BIRD[0].radius) {
-    console.log("Hit top horizontal wall")
+
     if (Settings.SOUND_ON)
       Sounds.hitWallSound.play()
     return true
@@ -603,7 +807,7 @@ function hitWall() {
 
   midpoint = [midpoint[0], Settings.WALLS[0].corners.leftBottom[1]]
   if (distance([Settings.BIRD[0].x, Settings.BIRD[0].y], midpoint) < Settings.BIRD[0].radius) {
-    console.log("Hit bottom horizontal wall")
+
     if (Settings.SOUND_ON)
       Sounds.hitWallSound.play()
     return true

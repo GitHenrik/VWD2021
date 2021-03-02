@@ -1,3 +1,4 @@
+
 function main() {
 	let canvas = document.getElementById("main-canvas")
 	let ctx = canvas.getContext("2d")
@@ -28,6 +29,8 @@ function resetGame() {
 }
 
 function initializeElements() {
+	Settings.DRAW_HIGHSCORE = true
+	Settings.DRAW_SCORE = true
 	Settings.groundLevel = Settings.initialGroundlevel
 	Settings.horizonLevel = Settings.groundLevel - 0.1
 	Settings.themeIndex = Math.floor(Math.random() * Settings.THEMES.length)
@@ -44,12 +47,12 @@ function initializeElements() {
 
 	//initialize bird
 	if (Settings.DRAW_BIRD) {
-		Settings.BIRD.push(new Bird(0.1, 0.5, Settings.birdSpeed, Settings.birdRadius, Settings.birdEyeColor, Settings.birdBodyColor, Settings.birdBeakColor))
+		Settings.BIRD.push(Bird.createBird())
 	}
 
 	//initialize walls
 	if (Settings.DRAW_WALLS) {
-		Settings.WALLS.push(generateWall(Settings.THEMES[Settings.themeIndex]))
+		Settings.WALLS.push(Wall.generateWall(Settings.THEMES[Settings.themeIndex]))
 	}
 
 
@@ -71,32 +74,27 @@ function arrayOfTruths(length) {
 }
 
 function animate() {
-	/**
-		* 1. draws everything
-			* 2. moves stuff around
-				-> check death
-		* 3. recursive call
-		*/
+
 	drawGame()
 
-	if (GlobalVariables.currentScore % 150 === 0 && Settings.DRAW_WALLS) {
-		Settings.WALLS.push(generateWall(Settings.THEMES[Settings.themeIndex]))
+	if (GlobalVariables.currentScore % 175 === 0 && Settings.DRAW_WALLS) {
+		Settings.WALLS.push(Wall.generateWall(Settings.THEMES[Settings.themeIndex]))
 	}
 
-	//bird tippuu painovoiman mukaisesti kiihtyen
+	//bird falls relative to gravity
 	if (Settings.DRAW_BIRD) {
 		Settings.BIRD[0].speed += Settings.GRAVITY
 		if (Settings.BIRD[0].speed > 0.02) {
 			Settings.BIRD[0].speed = 0.02
 		}
 		Settings.BIRD[0].y += Settings.BIRD[0].speed
-		//Makes bird stay visible even if invincibility is turned on
-		if (Settings.BIRD[0].y > 1) {
-			Settings.BIRD[0].y = 1
-		}
-		if (Settings.BIRD[0].y < 0) {
-			Settings.BIRD[0].y = 0
-		}
+		//Makes the bird stay on-screen even if invincibility is turned on
+		// if (Settings.BIRD[0].y + Settings.BIRD[0].radius > 1) {
+		// 	Settings.BIRD[0].y = 1 - Settings.BIRD[0].radius
+		// }
+		// if (Settings.BIRD[0].y - Settings.BIRD[0].radius < 0) {
+		// 	Settings.BIRD[0].y = Settings.BIRD[0].radius
+		// }
 	}
 
 	if (Settings.DRAW_WALLS) {
@@ -108,33 +106,48 @@ function animate() {
 		}
 	}
 
-
 	if (Settings.DEATH_ON && (checkDeath() || hitWall() || hitSolidWall())) {
-		endGame()
-	} else {
+		squishBird()
+
+		setTimeout(function () {
+			endGame()
+		}, 300)
+
+	}
+	else {
+		//update high score
 		GlobalVariables.currentScore++
-
-
-		//count highscore 
 		sessionStorage.setItem("finalScore", Math.floor(GlobalVariables.currentScore / 100))
 		var final = sessionStorage.getItem("finalScore")
 		var finalScore = Number(final)
 		var previousHighScore = sessionStorage.getItem("highScore")
 		var highScore = Number(previousHighScore)
-
 		if (finalScore >= highScore) {
-
 			sessionStorage.setItem("highScore", sessionStorage.getItem("finalScore"))
+
 		}
+		if (GlobalVariables.currentScore / 100 == highScore) {
+			Sounds.playSoundHighScore()
 
-
+		}
 		GlobalVariables.animationId = window.requestAnimationFrame(animate)
 	}
 }
 
+function squishBird() {
+	Settings.DRAW_HIGHSCORE = false // ei näytetä highscorea taustalla
+	Settings.DRAW_SCORE = false // ei näytetä scorea taustalla
+	drawGame()
+	Settings.BIRD[0].changeColor()
+	Settings.BIRD[0].squish()
+	GlobalVariables.animationId = window.requestAnimationFrame(squishBird)
+}
+
 
 function endGame() {
+	endScreen()
 	window.cancelAnimationFrame(GlobalVariables.animationId)
+
 }
 
 
@@ -150,7 +163,7 @@ function checkDeath() {
 	if (!Settings.DRAW_BIRD || !Settings.DEATH_ON) {
 		return false
 	}
-	if (Settings.BIRD[0].y > 1 - Settings.BIRD[0].radius || Settings.BIRD[0].y < Settings.BIRD[0].radius) {
+	if (Settings.BIRD[0].y > 1 - Settings.BIRD[0].radiusY || Settings.BIRD[0].y < Settings.BIRD[0].radiusY) {
 		if (Settings.SOUND_ON)
 			Sounds.hitFloorSound.play()
 		return true
@@ -173,7 +186,7 @@ Drawing order:
 	let ctx = canvas.getContext("2d")
 
 	Settings.themeSets[Settings.themeIndex].draw(ctx)
-	//change theme and randomised weather every now and then
+	//change theme and selected randomised weather every now and then
 	if (GlobalVariables.currentScore % Settings.CHANGE_THEME_INTERVAL === 0) {
 		Weather.setRandomWeather()
 		if (Settings.themeIndex + 1 >= Settings.THEMES.length) {

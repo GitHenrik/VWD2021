@@ -5,7 +5,8 @@ class KeyboardListener {
         return null
       }
       if (Settings.SOUND_ON) {
-        Sounds.flySound.play()
+        // Sounds.flySound.play()
+        Sounds.playSoundFly()
       }
       Settings.BIRD[0].fly()
     }

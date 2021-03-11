@@ -283,6 +283,27 @@ class Wall {
         }
 
       } else {
+
+        //Wall behind STOP sign
+
+        let wallPieceLegth = this.holeSize+0.21
+        let wallPiecewidth = this.width/4
+        ctx.save()
+        ctx.beginPath()
+        ctx.rect(this.x, this.holeStart , wallPiecewidth, wallPieceLegth )
+        ctx.rect(this.x+this.width/4, this.holeStart , wallPiecewidth, wallPieceLegth )
+        ctx.rect(this.x+2*this.width/4, this.holeStart , wallPiecewidth, wallPieceLegth )
+        ctx.rect(this.x+3*this.width/4, this.holeStart , wallPiecewidth, wallPieceLegth )
+
+
+
+        ctx.lineWidth = 0.005
+        ctx.fillStyle = "#8a4803"
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
+
+
         //Stacked traffic cones top obstacle
         for (let i = 0; i < 10; i++) {
 
@@ -316,6 +337,8 @@ class Wall {
 
           yTop -= 0.075
         }
+
+
 
         //Bottom of the traffic cone
         ctx.save()
@@ -381,8 +404,10 @@ class Wall {
 
           yBottom += 0.075
         }
-
         ctx.save()
+
+
+
         //middle block, STOP sign in this case
         let centerX = this.x + this.width / 2
         let centerY = this.holeStart + this.holeSize / 2
@@ -824,7 +849,7 @@ function hitSolidWall() {
   }
   if (Settings.WALLS[0].solid && Settings.BIRD[0].x + Settings.BIRD[0].radius >= Settings.WALLS[0].x) {
     if (Settings.SOUND_ON)
-      Sounds.hitWallSound.play()
+      Sounds.hitWallSound.play() //vanha ääni
     return true
   }
   return false

@@ -10,6 +10,7 @@ function main() {
 	document.addEventListener('keydown', KeyboardListener.keyPressed)
 	initializeElements()
 	startScreen()
+	animate()
 }
 
 function resetGame() {
@@ -29,6 +30,11 @@ function resetGame() {
 }
 
 function initializeElements() {
+	Settings.DRAW_SCORE = true
+	Settings.DRAW_HIGHSCORE = true
+	Settings.DRAW_BIRD = true
+	Settings.DEATH_ON = true
+	Settings.STARTSCREEN_ON = false
 	Settings.DRAW_HIGHSCORE = true
 	Settings.DRAW_SCORE = true
 	Settings.groundLevel = Settings.initialGroundlevel
@@ -75,7 +81,12 @@ function arrayOfTruths(length) {
 
 function animate() {
 
-	drawGame()
+	if (!Settings.STARTSCREEN_ON) {
+		drawGame()
+	} else {
+		drawGame()
+		startScreen()
+	}
 
 	if (GlobalVariables.currentScore % 175 === 0 && Settings.DRAW_WALLS) {
 		Settings.WALLS.push(Wall.generateWall(Settings.THEMES[Settings.themeIndex]))
@@ -115,28 +126,31 @@ function animate() {
 
 	}
 	else {
-		//update high score
 		GlobalVariables.currentScore++
-		sessionStorage.setItem("finalScore", Math.floor(GlobalVariables.currentScore / 100))
-		var final = sessionStorage.getItem("finalScore")
-		var finalScore = Number(final)
-		var previousHighScore = sessionStorage.getItem("highScore")
-		var highScore = Number(previousHighScore)
-		if (finalScore >= highScore) {
-			sessionStorage.setItem("highScore", sessionStorage.getItem("finalScore"))
+		if (Settings.DRAW_HIGHSCORE) {
+			//update high score
+			sessionStorage.setItem("finalScore", Math.floor(GlobalVariables.currentScore / 100))
+			var final = sessionStorage.getItem("finalScore")
+			var finalScore = Number(final)
+			var previousHighScore = sessionStorage.getItem("highScore")
+			var highScore = Number(previousHighScore)
+			if (finalScore >= highScore) {
+				sessionStorage.setItem("highScore", sessionStorage.getItem("finalScore"))
 
-		}
-		if (GlobalVariables.currentScore / 100 == highScore) {
-			Sounds.playSoundHighScore()
+			}
+			if (GlobalVariables.currentScore / 100 == highScore) {
+				Sounds.playSoundHighScore()
 
+			}
 		}
 		GlobalVariables.animationId = window.requestAnimationFrame(animate)
+
 	}
 }
 
 function squishBird() {
-	Settings.DRAW_HIGHSCORE = false // ei näytetä highscorea taustalla
-	Settings.DRAW_SCORE = false // ei näytetä scorea taustalla
+	Settings.DRAW_HIGHSCORE = false
+	Settings.DRAW_SCORE = false
 	drawGame()
 	Settings.BIRD[0].changeColor()
 	Settings.BIRD[0].squish()

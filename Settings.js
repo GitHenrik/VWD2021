@@ -9,6 +9,7 @@ class Settings {
   static SOUND_ON = true
   static DEATH_ON = true
   static DRAW_WEATHER = true
+  static STARTSCREEN_ON = true
 
   //VELOCITY SETTINGS
   static GRAVITY = 0.0005

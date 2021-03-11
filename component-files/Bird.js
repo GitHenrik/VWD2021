@@ -64,16 +64,51 @@ class Bird {
     //draw beak
     ctx.beginPath()
     ctx.fillStyle = this.beakColor
-    ctx.fillRect(0.03, -0.01, this.radiusX, 0.02)
-    ctx.rect(0.03, -0.01, this.radiusX, 0.02)
-    ctx.lineWidth = 0.005
+    // ctx.fillRect(0.03, -0.01, this.radiusX, 0.02)
+    // ctx.rect(0.03, -0.01, this.radiusX, 0.02)
+    // changed rect to triangle:
+    ctx.moveTo(0.03, -0.01);
+    ctx.lineTo(0.08, 0.0);
+    ctx.lineTo(0.03, 0.01);
+    ctx.closePath();
+    ctx.fill()
     ctx.stroke()
+
     //draw eye
     ctx.beginPath()
     ctx.arc(0, -this.radiusX / 2, this.radiusX / 3, 0, 2 * Math.PI)
     ctx.fillStyle = this.eyeColor
     ctx.fill()
     ctx.stroke()
+
+
+    //draw wing
+    ctx.beginPath();
+    //rotate wing to opposite direction than bird -> looks like it gives "movement" for bird
+    ctx.rotate(this.rotation * -1.8)
+    ctx.moveTo(-0.02, 0.01);
+    ctx.bezierCurveTo(-0.01, 0.06, 0.01, 0.03, 0.01, 0.01);
+    //almost transparent, so the wing looks like its almost same color as the birds body
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.fill()
+    ctx.lineWidth = 0.002
+    ctx.stroke();
+    //1 line
+    ctx.beginPath();
+    ctx.moveTo(-0.013, 0.01);
+    ctx.lineTo(-0.01, 0.035);
+    ctx.stroke()
+    //2 line
+    ctx.beginPath();
+    ctx.moveTo(-0.005, 0.01);
+    ctx.lineTo(-0.005, 0.037);
+    ctx.stroke()
+    //3 line
+    ctx.beginPath();
+    ctx.moveTo(0.003, 0.01);
+    ctx.lineTo(0.0007, 0.035);
+    ctx.stroke()
+
     ctx.restore()
   }
 }
